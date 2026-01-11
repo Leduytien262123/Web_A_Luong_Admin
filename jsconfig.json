@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["./*"]
+    },
+    "jsx": "preserve",
+    "allowJs": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*", "src/types/global.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}

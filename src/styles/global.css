@@ -1,0 +1,152 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+/* transition fade-slide */
+.fade-slide-leave-active,
+.fade-slide-enter-active {
+  transition: all 0.3s;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(-2%);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(2%);
+}
+
+/* Tùy chỉnh style thanh cuộn */
+.cus-scroll {
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+.cus-scroll-x {
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 8px;
+  }
+}
+.cus-scroll-y {
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 0;
+  }
+}
+.cus-scroll,
+.cus-scroll-x,
+.cus-scroll-y {
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 4px;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: #bfbfbf;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgb(var(--primary-color));
+    }
+  }
+}
+
+/* Fix icon empty state cho Naive UI Data Table trong cả theme sáng và tối */
+.n-data-table-empty {
+  color: var(--n-text-color) !important;
+}
+
+.n-data-table-empty .n-base-icon,
+.n-data-table-empty svg {
+  color: var(--n-text-color-disabled) !important;
+  fill: var(--n-text-color-disabled) !important;
+}
+
+.n-empty .n-empty__icon {
+  color: var(--n-text-color-disabled) !important;
+}
+
+.n-empty .n-empty__icon .n-base-icon,
+.n-empty .n-empty__icon svg {
+  color: var(--n-text-color-disabled) !important;
+  fill: var(--n-text-color-disabled) !important;
+}
+
+/* Đảm bảo icon empty state hiển thị trong light theme */
+html:not(.dark) .n-data-table-empty .n-base-icon,
+html:not(.dark) .n-data-table-empty svg,
+html:not(.dark) .n-empty .n-empty__icon .n-base-icon,
+html:not(.dark) .n-empty .n-empty__icon svg {
+  color: #c2c2c2 !important;
+  fill: #c2c2c2 !important;
+  opacity: 1 !important;
+}
+
+/* Đảm bảo icon empty state hiển thị trong dark theme */
+.dark .n-data-table-empty .n-base-icon,
+.dark .n-data-table-empty svg,
+.dark .n-empty .n-empty__icon .n-base-icon,
+.dark .n-empty .n-empty__icon svg {
+  color: #666 !important;
+  fill: #666 !important;
+  opacity: 1 !important;
+}
+
+/* Hiệu ứng animation khi chuyển đổi chủ đề */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root),
+.dark::view-transition-new(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root),
+.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+
+.custom-collapse-light-blue.n-collapse {
+  --n-title-text-color: white !important;
+  --n-title-font-weight: 400 !important;
+  --n-title-font-size: 18px !important;
+  --n-arrow-color: rgb(19 61 133 / var(--un-text-opacity)) !important;
+  --n-title-padding: 10px 0 0 0 !important;
+  --n-item-margin: 10px 0 0 0 !important;
+  --un-text-opacity: 1;
+}
+
+.custom-collapse-header-light-blue.n-collapse-item
+  > .n-collapse-item__header
+  > .n-collapse-item__header-main {
+  background-color: #316c72ff !important;
+  min-height: 40px;
+  padding-left: 12px;
+  padding-right: 10px;
+  border-radius: 6px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  justify-content: space-between !important;
+}
+
+/* i.n-base-icon {
+  color: white;
+} */
