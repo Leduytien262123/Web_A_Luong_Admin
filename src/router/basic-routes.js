@@ -136,6 +136,33 @@ export const basicRoutes = [
   },
 
   {
+    name: "operation-log",
+    path: "/configs/operation-log",
+    component: () => import("@/views/configs/operation-log/index.vue"),
+    meta: {
+      title: "Nhật ký hoạt động",
+    },
+  },
+
+  {
+    name: "home-configuration",
+    path: "/configs/home-configuration",
+    component: () => import("@/views/configs/home-configuration/index.vue"),
+    meta: {
+      title: "Cấu hình trang chủ",
+    },
+  },
+
+  {
+    name: "edit-home-configuration",
+    path: "/configs/home-configuration/edit/:id",
+    component: () => import("@/views/configs/home-configuration/edit/[id].vue"),
+    meta: {
+      title: "Chỉnh sửa cấu hình",
+    },
+  },
+
+  {
     name: "test-upload",
     path: "/demo/upload",
     component: () => import("@/views/demo/upload/index.vue"),

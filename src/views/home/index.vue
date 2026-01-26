@@ -153,7 +153,9 @@
         <VChart :option="trendOption" autoresize />
       </div>
     </n-card> -->
-    <h1 class="">Tính năng đang phát triển...</h1>
+    <h1 class="">
+      Tính năng đang phát triển...
+    </h1>
   </AppPage>
 </template>
 

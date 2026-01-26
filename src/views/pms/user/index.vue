@@ -1,7 +1,11 @@
 <template>
   <CommonPage>
     <template #action>
-      <NButton v-permission="'AddUser'" type="primary" @click="handleAdd()">
+      <NButton
+        v-permission="'AddUser'"
+        type="primary"
+        @click="handleAdd()"
+      >
         <i class="i-material-symbols:add mr-4 text-18" />
         Tạo người dùng mới
       </NButton>
@@ -14,7 +18,10 @@
       :columns="columns"
       :get-data="api.read"
     >
-      <MeQueryItem label="Tên người dùng" :label-width="90">
+      <MeQueryItem
+        label="Tên người dùng"
+        :label-width="90"
+      >
         <n-input
           v-model:value="queryItems.username"
           type="text"
@@ -23,11 +30,21 @@
         />
       </MeQueryItem>
 
-      <MeQueryItem label="Giới tính" :label-width="50">
-        <n-select v-model:value="queryItems.gender" clearable :options="genders" />
+      <MeQueryItem
+        label="Giới tính"
+        :label-width="50"
+      >
+        <n-select
+          v-model:value="queryItems.gender"
+          clearable
+          :options="genders"
+        />
       </MeQueryItem>
 
-      <MeQueryItem label="Trạng thái" :label-width="50">
+      <MeQueryItem
+        label="Trạng thái"
+        :label-width="50"
+      >
         <n-select
           v-model:value="queryItems.enable"
           clearable
@@ -39,7 +56,10 @@
       </MeQueryItem>
     </MeCrud>
 
-    <MeModal ref="modalRef" width="520px">
+    <MeModal
+      ref="modalRef"
+      width="520px"
+    >
       <n-form
         ref="modalFormRef"
         label-placement="left"
@@ -57,7 +77,10 @@
             trigger: ['input', 'blur'],
           }"
         >
-          <n-input v-model:value="modalForm.username" :disabled="modalAction !== 'add'" />
+          <n-input
+            v-model:value="modalForm.username"
+            :disabled="modalAction !== 'add'"
+          />
         </n-form-item>
         <n-form-item
           v-if="['add', 'reset'].includes(modalAction)"
@@ -69,10 +92,18 @@
             trigger: ['input', 'blur'],
           }"
         >
-          <n-input v-model:value="modalForm.password" type="password" show-password-on="mousedown" />
+          <n-input
+            v-model:value="modalForm.password"
+            type="password"
+            show-password-on="mousedown"
+          />
         </n-form-item>
 
-        <n-form-item v-if="['add', 'setRole'].includes(modalAction)" label="Vai trò" path="roleIds">
+        <n-form-item
+          v-if="['add', 'setRole'].includes(modalAction)"
+          label="Vai trò"
+          path="roleIds"
+        >
           <n-select
             v-model:value="modalForm.roleIds"
             :options="roles"
@@ -83,7 +114,11 @@
             multiple
           />
         </n-form-item>
-        <n-form-item v-if="modalAction === 'add'" label="Trạng thái" path="enable">
+        <n-form-item
+          v-if="modalAction === 'add'"
+          label="Trạng thái"
+          path="enable"
+        >
           <NSwitch v-model:value="modalForm.enable">
             <template #checked>
               Kích hoạt
@@ -94,7 +129,11 @@
           </NSwitch>
         </n-form-item>
       </n-form>
-      <n-alert v-if="modalAction === 'add'" type="warning" closable>
+      <n-alert
+        v-if="modalAction === 'add'"
+        type="warning"
+        closable
+      >
         Thông tin chi tiết cần được người dùng bổ sung và chỉnh sửa
       </n-alert>
     </MeModal>

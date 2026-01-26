@@ -417,14 +417,25 @@ async function handleSave() {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? 'Sửa đơn hàng' : 'Thêm đơn hàng'">
-      <n-form :model="productForm" :rules="rules" ref="formRef">
-        <n-grid cols="3" x-gap="16" y-gap="16">
+      <n-form
+        ref="formRef"
+        :model="productForm"
+        :rules="rules"
+      >
+        <n-grid
+          cols="3"
+          x-gap="16"
+          y-gap="16"
+        >
           <n-grid-item span="1">
-            <n-form-item label="Trạng thái" path="status">
+            <n-form-item
+              label="Trạng thái"
+              path="status"
+            >
               <NaiveInput
                 :value="statusLabel"
                 readonly
@@ -434,7 +445,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Thanh toán" path="payment_method">
+            <n-form-item
+              label="Thanh toán"
+              path="payment_method"
+            >
               <NaiveSelect
                 v-model:value="productForm.payment_method"
                 :options="paymentsMethod"
@@ -454,7 +468,10 @@ async function handleSave() {
             </n-form-item> -->
 
           <n-grid-item span="1">
-            <n-form-item label="Người tạo" path="creator_name">
+            <n-form-item
+              label="Người tạo"
+              path="creator_name"
+            >
               <NaiveInput
                 v-model:value="productForm.creator_name"
                 placeholder="Nhập tên người tạo"
@@ -464,7 +481,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Tên khách hàng" path="name">
+            <n-form-item
+              label="Tên khách hàng"
+              path="name"
+            >
               <NaiveInput
                 v-model:value="productForm.name"
                 placeholder="Nhập tên khách hàng"
@@ -473,41 +493,50 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Số điện thoại" path="phone">
+            <n-form-item
+              label="Số điện thoại"
+              path="phone"
+            >
               <NaiveInput
                 v-model:value="productForm.phone"
-                @input="
-                  productForm.phone = $event.replace(/[^\d]/g, '').slice(0, 10)
-                "
                 :input-props="{
                   inputmode: 'numeric',
                   pattern: '[0-9]*',
                   maxlength: 10,
                 }"
                 placeholder="Nhập số điện thoại"
+                @input="
+                  productForm.phone = $event.replace(/[^\d]/g, '').slice(0, 10)
+                "
               />
             </n-form-item>
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Email" path="email">
+            <n-form-item
+              label="Email"
+              path="email"
+            >
               <NaiveInput
                 v-model:value="productForm.email"
+                placeholder="Nhập email"
                 @input="
                   productForm.email = $event
                     .replace(/[^a-zA-Z0-9@._+\-]/g, '')
                     .slice(0, 254)
                 "
-                placeholder="Nhập email"
               />
             </n-form-item>
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item label="Địa chỉ" path="address">
+            <n-form-item
+              label="Địa chỉ"
+              path="address"
+            >
               <UpdateAddress
                 ref="updateAddressRef"
-                :isDisabled="productForm.status !== 'pending' && isEdit"
+                :is-disabled="productForm.status !== 'pending' && isEdit"
                 :addresses="productForm.addresses"
                 @update:addresses="productForm.addresses = $event"
                 @input-address-change="handleAddressChange"
@@ -516,7 +545,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item label="Ghi chú" path="note">
+            <n-form-item
+              label="Ghi chú"
+              path="note"
+            >
               <NaiveInput
                 v-model:value="productForm.note"
                 placeholder="Ghi chú"
@@ -525,7 +557,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Mã giảm giá" path="discount_code">
+            <n-form-item
+              label="Mã giảm giá"
+              path="discount_code"
+            >
               <NaiveSelect
                 v-model:value="productForm.discount_code"
                 :options="discounts"
@@ -537,7 +572,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Phí ship" path="shipping_fee">
+            <n-form-item
+              label="Phí ship"
+              path="shipping_fee"
+            >
               <NaiveInputNumber
                 v-model:value="productForm.shipping_fee"
                 :money="true"
@@ -549,7 +587,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="2">
-            <n-form-item label="Chọn sản phẩm" path="product_ids">
+            <n-form-item
+              label="Chọn sản phẩm"
+              path="product_ids"
+            >
               <NaiveSelect
                 v-model:value="selectedProductIds"
                 :options="products"
@@ -561,17 +602,30 @@ async function handleSave() {
           </n-grid-item>
         </n-grid>
 
-        <n-grid cols="5" x-gap="16" y-gap="16">
-          <template v-for="(p, idx) in productForm.product_ids" :key="p.id">
+        <n-grid
+          cols="5"
+          x-gap="16"
+          y-gap="16"
+        >
+          <template
+            v-for="(p, idx) in productForm.product_ids"
+            :key="p.id"
+          >
             <n-grid-item :span="2">
               <n-form-item label="Sản phẩm">
-                <NaiveInput v-model:value="p.name" readonly />
+                <NaiveInput
+                  v-model:value="p.name"
+                  readonly
+                />
               </n-form-item>
             </n-grid-item>
 
             <n-grid-item :span="1">
               <n-form-item label="Số lượng">
-                <NaiveInputNumber v-model:value="p.quantity" :min="1" />
+                <NaiveInputNumber
+                  v-model:value="p.quantity"
+                  :min="1"
+                />
               </n-form-item>
             </n-grid-item>
 
@@ -584,9 +638,12 @@ async function handleSave() {
                   class="mr-16"
                   readonly
                 />
-                <n-button type="error" @click.prevent="removeProduct(idx)"
-                  >Xoá</n-button
+                <n-button
+                  type="error"
+                  @click.prevent="removeProduct(idx)"
                 >
+                  Xoá
+                </n-button>
               </n-form-item>
             </n-grid-item>
           </template>
@@ -595,9 +652,9 @@ async function handleSave() {
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
         />
       </template>
     </n-card>

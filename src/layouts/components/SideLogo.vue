@@ -1,5 +1,8 @@
 <template>
-  <router-link class="h-60 f-c-c" to="/">
+  <router-link
+    class="h-60 f-c-c"
+    to="/"
+  >
     <TheLogo />
     <h2
       v-show="!appStore.collapsed"

@@ -3,39 +3,53 @@
     <template #action>
       <AddReload
         :reset="resetListArticles"
-        :handleAdd="handleAddArticle"
-        :titleAdd="'Tạo bài viết'"
+        :handle-add="handleAddArticle"
+        :title-add="'Tạo bài viết'"
       />
     </template>
 
     <n-card title="Quản lý bài viết">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item label="Tìm kiếm bài viết" class="w-full">
+          <n-form-item
+            label="Tìm kiếm bài viết"
+            class="w-full"
+          >
             <NaiveInput
+              v-model:value="searchQuery.search"
               clearable
               placeholder="Nhập tìm kiếm ..."
-              v-model:value="searchQuery.search"
               @keyup.enter="throttledLoadArticles"
             />
           </n-form-item>
-          <n-form-item label="Danh mục bài viết" class="w-full">
+          <n-form-item
+            label="Danh mục bài viết"
+            class="w-full"
+          >
             <TreeSelectCategories
               v-model:value="searchQuery.category"
               clearable
               placeholder="Chọn danh mục bài viết"
             />
           </n-form-item>
-          <n-form-item label="Tag" class="w-full">
+          <n-form-item
+            label="Tag"
+            class="w-full"
+          >
             <NaiveSelect
+              v-model:value="searchQuery.tag"
               clearable
               placeholder="Chọn tag"
-              v-model:value="searchQuery.tag"
-              @keyup.enter="throttledLoadArticles"
               :options="tagOptions"
+              @keyup.enter="throttledLoadArticles"
             />
           </n-form-item>
-          <n-button type="primary" @click="searchData">Tìm kiếm</n-button>
+          <n-button
+            type="primary"
+            @click="searchData"
+          >
+            Tìm kiếm
+          </n-button>
         </div>
 
         <n-data-table
@@ -51,7 +65,7 @@
           :page="1"
           :limit="10"
           :name="'bài viết'"
-          :pageSize="10"
+          :page-size="10"
           @change="loadArticles"
         />
       </n-space>

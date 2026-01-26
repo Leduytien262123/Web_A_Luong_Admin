@@ -188,50 +188,62 @@ watch(
 
 <template>
   <div class="flex flex-col w-full gap-16">
-    <div v-if="!isAddingNewAddress" class="flex gap-16">
+    <div
+      v-if="!isAddingNewAddress"
+      class="flex gap-16"
+    >
       <NaiveSelect
         :value="optionAddress.length === 0 ? null : selectedAddressIndex"
         :options="optionAddress"
         placeholder="Chọn địa chỉ"
-        @update:value="handleAddressSelect"
         :disabled="isDisabled"
+        @update:value="handleAddressSelect"
       />
-      <n-button type="primary" @click="startAddingNewAddress"
-        >Thêm mới</n-button
+      <n-button
+        type="primary"
+        @click="startAddingNewAddress"
       >
+        Thêm mới
+      </n-button>
     </div>
     <div class="flex gap-16">
       <NaiveInput
         v-model:value="currentInputAddress"
-        @update:value="handleInputAddressChange"
         placeholder="Nhập địa chỉ"
         clearable
         :disabled="isDisabled"
+        @update:value="handleInputAddressChange"
       />
       <n-button
         v-if="isAddingNewAddress"
         type="primary"
-        @click="addNewAddress"
         :disabled="currentInputAddress.length < 20 || isDisabled"
-        >Thêm địa chỉ</n-button
+        @click="addNewAddress"
       >
+        Thêm địa chỉ
+      </n-button>
       <n-button
         v-if="!isAddingNewAddress"
         type="primary"
-        @click="updateAddress"
         :disabled="!canUpdate || isDisabled"
-        >Cập nhật địa chỉ</n-button
+        @click="updateAddress"
       >
+        Cập nhật địa chỉ
+      </n-button>
       <n-button
         v-if="!isAddingNewAddress"
         type="error"
-        @click="removeAddress"
         :disabled="safeAddresses.length <= 1 || isDisabled"
-        >Xoá địa chỉ</n-button
+        @click="removeAddress"
       >
-      <n-button v-if="isAddingNewAddress" @click="cancelAddAddress"
-        >Hủy</n-button
+        Xoá địa chỉ
+      </n-button>
+      <n-button
+        v-if="isAddingNewAddress"
+        @click="cancelAddAddress"
       >
+        Hủy
+      </n-button>
     </div>
   </div>
 </template>

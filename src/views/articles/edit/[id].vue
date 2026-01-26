@@ -1,8 +1,8 @@
 <script setup>
 const route = useRoute();
-import BlogAddEdit from "@/components/Blogs/BlogAddEdit.vue";
+import ArticleAddEdit from "@/components/Articles/ArticleAddEdit.vue";
 </script>
 
 <template>
-  <BlogAddEdit :id="route?.params?.id" />
+  <ArticleAddEdit :id="route?.params?.id" />
 </template>

@@ -21,11 +21,17 @@ const props = defineProps({
 
 <template>
   <div class="flex justìy-end gap-12">
-    <NButton type="info" @click="reset">
+    <NButton
+      type="info"
+      @click="reset"
+    >
       <i class="i-material-symbols:refresh mr-4 text-18" />
       Tải lại danh sách
     </NButton>
-    <NButton type="primary" @click="handleAdd">
+    <NButton
+      type="primary"
+      @click="handleAdd"
+    >
       <i class="i-material-symbols:add mr-4 text-18" />
       {{ titleAdd }}
     </NButton>

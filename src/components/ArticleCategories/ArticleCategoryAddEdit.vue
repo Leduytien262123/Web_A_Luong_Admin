@@ -144,7 +144,7 @@ onMounted(() => {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card
@@ -157,9 +157,16 @@ onMounted(() => {
           :rules="rules"
           label-placement="top"
         >
-          <n-grid cols="3" x-gap="16" y-gap="16">
+          <n-grid
+            cols="3"
+            x-gap="16"
+            y-gap="16"
+          >
             <n-grid-item span="1">
-              <n-form-item label="Tên danh mục bài viết" path="name">
+              <n-form-item
+                label="Tên danh mục bài viết"
+                path="name"
+              >
                 <NaiveInput
                   v-model:value="blogCategoryForm.name"
                   placeholder="Nhập tên danh mục"
@@ -169,7 +176,10 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="1">
-              <n-form-item label="Đường dẫn" path="slug">
+              <n-form-item
+                label="Đường dẫn"
+                path="slug"
+              >
                 <NaiveInput
                   v-model:value="blogCategoryForm.slug"
                   placeholder="Nhập đường dẫn"
@@ -190,22 +200,22 @@ onMounted(() => {
 
             <n-grid-item span="3">
               <FormMeta
-                v-model:metaTitle="blogCategoryForm.metadata.meta_title"
-                v-model:metaKeywords="blogCategoryForm.metadata.meta_keywords"
-                v-model:metaDescription="
+                v-model:meta-title="blogCategoryForm.metadata.meta_title"
+                v-model:meta-keywords="blogCategoryForm.metadata.meta_keywords"
+                v-model:meta-description="
                   blogCategoryForm.metadata.meta_description
                 "
-                v-model:metaImage="blogCategoryForm.metadata.meta_image"
+                v-model:meta-image="blogCategoryForm.metadata.meta_image"
               />
             </n-grid-item>
 
             <n-grid-item span="3">
               <ContentBlog
-                :title="'Nội dung danh mục bài viết'"
-                v-model:coverPhoto="blogCategoryForm.content.cover_photo"
+                v-model:cover-photo="blogCategoryForm.content.cover_photo"
                 v-model:images="blogCategoryForm.content.images"
                 v-model:description="blogCategoryForm.content.description"
                 v-model:content="blogCategoryForm.content.content"
+                :title="'Nội dung danh mục bài viết'"
               />
             </n-grid-item>
           </n-grid>
@@ -214,9 +224,9 @@ onMounted(() => {
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
           :loading="loading"
           :disabled="loading"
         />

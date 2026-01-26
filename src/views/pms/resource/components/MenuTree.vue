@@ -1,10 +1,21 @@
 <template>
   <div>
-    <n-space vertical :size="12">
+    <n-space
+      vertical
+      :size="12"
+    >
       <h3>Menu</h3>
       <div class="flex">
-        <n-input v-model:value="pattern" placeholder="Tìm kiếm" clearable />
-        <NButton class="ml-12" type="primary" @click="handleAdd()">
+        <n-input
+          v-model:value="pattern"
+          placeholder="Tìm kiếm"
+          clearable
+        />
+        <NButton
+          class="ml-12"
+          type="primary"
+          @click="handleAdd()"
+        >
           <i class="i-material-symbols:add mr-4 text-14" />
           Thêm mới
         </NButton>
@@ -20,11 +31,16 @@
         :on-update:selected-keys="onSelect"
         key-field="code"
         label-field="name"
-        block-line default-expand-all
+        block-line
+        default-expand-all
       />
     </n-space>
 
-    <ResAddOrEdit ref="modalRef" :menus="treeData" @refresh="(data) => emit('refresh', data)" />
+    <ResAddOrEdit
+      ref="modalRef"
+      :menus="treeData"
+      @refresh="(data) => emit('refresh', data)"
+    />
   </div>
 </template>
 

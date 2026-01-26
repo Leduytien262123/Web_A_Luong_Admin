@@ -154,12 +154,15 @@ const updateAlt = (index, value) => {
       :multiple="multiple"
       :max="max"
       :custom-request="customRequest"
+      class="max-w-[100px]"
       @update:file-list="handleUpdateFileList"
       @change="handleChange"
       @remove="handleRemove"
-      class="max-w-[100px]"
     >
-      <n-button v-if="listType === 'text'" :disabled="disabled">
+      <n-button
+        v-if="listType === 'text'"
+        :disabled="disabled"
+      >
         <template #icon>
           <n-icon><i class="i-mdi:cloud-upload" /></n-icon>
         </template>
@@ -178,7 +181,10 @@ const updateAlt = (index, value) => {
       </div>
     </div> -->
 
-    <div v-if="fileList && fileList.length > 0" class="w-full">
+    <div
+      v-if="fileList && fileList.length > 0"
+      class="w-full"
+    >
       <div class="w-full flex flex-col gap-12px">
         <div
           v-for="(file, idx) in fileList"

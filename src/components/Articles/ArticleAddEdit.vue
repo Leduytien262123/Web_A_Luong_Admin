@@ -13,7 +13,6 @@ const router = useRouter();
 const formRef = ref(null);
 const loading = ref(false);
 const isEdit = computed(() => !!props.id);
-const blogCategories = ref([]);
 const tags = ref([]);
 
 const optionsStatus = [
@@ -26,9 +25,10 @@ const formValue = ref({
   description: "",
   slug: "",
   category_id: null,
-  tag_id: null,
+  tag_ids: null,
   status: "draft",
   published_at: null,
+  is_hot: false,
   metadata: {
     meta_title: "",
     meta_keywords: "",
@@ -60,26 +60,6 @@ const rules = {
   ],
 };
 
-async function loadBlogCategories() {
-  try {
-    loading.value = true;
-    const params = {
-      page: 1,
-      length: 10,
-    };
-    const response = await api.getCategories(params);
-    blogCategories.value =
-      response.data?.data?.categories?.map((e) => ({
-        label: e.name,
-        value: e.id,
-      })) || [];
-  } catch (error) {
-    $message.error("Không thể tải danh mục bài viết");
-  } finally {
-    loading.value = false;
-  }
-}
-
 async function loadTags() {
   try {
     loading.value = true;
@@ -100,12 +80,12 @@ async function loadTags() {
   }
 }
 
-async function loadBlog() {
+async function loadArticles() {
   if (!props.id) return;
 
   try {
     loading.value = true;
-    const response = await api.getBlogById(props.id);
+    const response = await api.getArticleById(props.id);
     if (response?.data?.success) {
       const data = response?.data?.data;
 
@@ -113,8 +93,9 @@ async function loadBlog() {
         title: data?.title || "",
         slug: data?.slug || "",
         is_active: data?.is_active || false,
+        is_hot: data?.is_hot || false,
         category_id: data?.category_id || null,
-        tag_id: data?.tag_id || null,
+        tag_ids: data?.tag_ids || null,
         status: data?.status || "draft",
         published_at: data?.published_at || null,
         description: data?.description || "",
@@ -141,7 +122,7 @@ async function loadBlog() {
 }
 
 function handleBack() {
-  router.push("/blog");
+  router.push("/articles");
 }
 
 async function handleSave() {
@@ -156,10 +137,10 @@ async function handleSave() {
     }
 
     if (isEdit.value) {
-      await api.updateBlog(props.id, dataToSend);
+      await api.updateArticle(props.id, dataToSend);
       $message.success("Cập nhật bài viết thành công!");
     } else {
-      await api.createBlog(dataToSend);
+      await api.createArticle(dataToSend);
       $message.success("Thêm bài viết thành công!");
     }
 
@@ -186,10 +167,9 @@ function isValidDate(dateStr) {
 }
 
 onMounted(() => {
-  loadBlogCategories();
   loadTags();
   if (isEdit.value) {
-    loadBlog();
+    loadArticles();
   }
 });
 </script>
@@ -197,7 +177,7 @@ onMounted(() => {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? 'Sửa bài viết' : 'Thêm bài viết'">
@@ -208,9 +188,16 @@ onMounted(() => {
           :rules="rules"
           label-placement="top"
         >
-          <n-grid cols="4" x-gap="16" y-gap="16">
+          <n-grid
+            cols="4"
+            x-gap="16"
+            y-gap="16"
+          >
             <n-grid-item span="2">
-              <n-form-item label="Tên bài viết" path="title">
+              <n-form-item
+                label="Tên bài viết"
+                path="title"
+              >
                 <NaiveInput
                   v-model:value="formValue.title"
                   placeholder="Nhập tên bài viết"
@@ -219,7 +206,10 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item label="Đường dẫn" path="slug">
+              <n-form-item
+                label="Đường dẫn"
+                path="slug"
+              >
                 <NaiveInput
                   v-model:value="formValue.slug"
                   placeholder="Nhập đường dẫn"
@@ -229,7 +219,10 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item label="Danh mục bài viết" path="category_id">
+              <n-form-item
+                label="Danh mục bài viết"
+                path="category_id"
+              >
                 <TreeSelectCategories
                   v-model:value="formValue.category_id"
                   :placeholder="'Chọn danh mục cha'"
@@ -238,18 +231,25 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item label="Thẻ tag" path="tag_id">
+              <n-form-item
+                label="Thẻ tag"
+                path="tag_ids"
+              >
                 <NaiveSelect
-                  v-model:value="formValue.tag_id"
+                  v-model:value="formValue.tag_ids"
                   :options="tags"
                   clearable
+                  multiple
                   placeholder="Chọn thẻ tag"
                 />
               </n-form-item>
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item label="Trạng thái" path="status">
+              <n-form-item
+                label="Trạng thái"
+                path="status"
+              >
                 <NaiveSelect
                   v-model:value="formValue.status"
                   :options="optionsStatus"
@@ -258,21 +258,24 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item label="Ngày đăng" path="published_at">
+              <n-form-item
+                label="Ngày đăng"
+                path="published_at"
+              >
                 <NaiveDatePicker
                   :value="
                     isValidDate(formValue.published_at)
                       ? Date.parse(formValue.published_at)
                       : null
                   "
+                  type="date"
+                  class="w-full"
                   @update:value="
                     (val) =>
                       (formValue.published_at = val
                         ? new Date(val).toISOString()
                         : null)
                   "
-                  type="date"
-                  class="w-full"
                 />
               </n-form-item>
             </n-grid-item>
@@ -289,22 +292,38 @@ onMounted(() => {
               </n-form-item>
             </n-grid-item>
 
+            <n-grid-item span="2">
+              <n-form-item
+                label="Nổi bật"
+                path="is_hot"
+              >
+                <n-switch v-model:value="formValue.is_hot">
+                  <template #checked>
+                    Nổi bật
+                  </template>
+                  <template #unchecked>
+                    Bình thường
+                  </template>
+                </n-switch>
+              </n-form-item>
+            </n-grid-item>
+
             <n-grid-item span="4">
               <FormMeta
-                v-model:metaTitle="formValue.metadata.meta_title"
-                v-model:metaKeywords="formValue.metadata.meta_keywords"
-                v-model:metaDescription="formValue.metadata.meta_description"
-                v-model:metaImage="formValue.metadata.meta_image"
+                v-model:meta-title="formValue.metadata.meta_title"
+                v-model:meta-keywords="formValue.metadata.meta_keywords"
+                v-model:meta-description="formValue.metadata.meta_description"
+                v-model:meta-image="formValue.metadata.meta_image"
               />
             </n-grid-item>
 
             <n-grid-item span="4">
               <ContentBlog
-                :title="'Nội dung bài viết'"
-                v-model:coverPhoto="formValue.content.cover_photo"
+                v-model:cover-photo="formValue.content.cover_photo"
                 v-model:images="formValue.content.images"
                 v-model:description="formValue.content.description"
                 v-model:content="formValue.content.content"
+                :title="'Nội dung bài viết'"
               />
             </n-grid-item>
           </n-grid>
@@ -313,9 +332,9 @@ onMounted(() => {
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
         />
       </template>
     </n-card>

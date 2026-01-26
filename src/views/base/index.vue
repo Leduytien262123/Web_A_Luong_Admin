@@ -47,8 +47,14 @@
       </n-card>
     </n-space>
 
-    <n-space size="large" mt-30>
-      <n-card min-w-340 title="Thông báo Notification">
+    <n-space
+      size="large"
+      mt-30
+    >
+      <n-card
+        min-w-340
+        title="Thông báo Notification"
+      >
         <n-space>
           <n-button @click="notify('info')">
             Thông tin
@@ -65,20 +71,39 @@
         </n-space>
       </n-card>
 
-      <n-card min-w-340 title="Hộp thoại xác nhận Dialog">
-        <n-button type="error" @click="handleDelete">
+      <n-card
+        min-w-340
+        title="Hộp thoại xác nhận Dialog"
+      >
+        <n-button
+          type="error"
+          @click="handleDelete"
+        >
           <i class="i-mi:delete mr-4" />
           Xóa
         </n-button>
       </n-card>
 
-      <n-card min-w-340 title="Thông báo Message">
+      <n-card
+        min-w-340
+        title="Thông báo Message"
+      >
         <n-space>
-          <n-button :loading="loading" type="primary" @click="handleLogin">
-            <i v-show="!loading" class="i-mdi:login mr-4" />
+          <n-button
+            :loading="loading"
+            type="primary"
+            @click="handleLogin"
+          >
+            <i
+              v-show="!loading"
+              class="i-mdi:login mr-4"
+            />
             Đăng nhập
           </n-button>
-          <n-button type="error" @click="handleMultiMessage">
+          <n-button
+            type="error"
+            @click="handleMultiMessage"
+          >
             Nhiều thông báo lỗi
           </n-button>
         </n-space>

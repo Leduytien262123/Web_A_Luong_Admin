@@ -26,14 +26,17 @@ const props = defineProps({
 <template>
   <div class="flex items-center justify-center">
     <NSpace>
-      <NButton @click="handleBack">Hủy</NButton>
+      <NButton @click="handleBack">
+        Hủy
+      </NButton>
       <NButton
         type="primary"
         :loading="loading"
         :disabled="disabled"
         @click="handleSave"
-        >{{ isEdit ? "Cập nhật" : "Thêm mới" }}</NButton
       >
+        {{ isEdit ? "Cập nhật" : "Thêm mới" }}
+      </NButton>
     </NSpace>
   </div>
 </template>

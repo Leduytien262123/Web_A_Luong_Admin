@@ -37,9 +37,14 @@ const format = (value) => {
     :value="value"
     :parse="money ? parse : undefined"
     :format="money ? format : undefined"
-    @update:value="emit('update:value', $event)"
     class="w-full"
+    @update:value="emit('update:value', $event)"
   >
-    <template v-if="percent" #suffix> % </template>
+    <template
+      v-if="percent"
+      #suffix
+    >
+      %
+    </template>
   </n-input-number>
 </template>

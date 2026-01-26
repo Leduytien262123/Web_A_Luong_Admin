@@ -9,10 +9,19 @@
         size="large"
       >
         <template #footer>
-          <n-button v-if="back" type="primary" ghost @click="router.replace(back)">
+          <n-button
+            v-if="back"
+            type="primary"
+            ghost
+            @click="router.replace(back)"
+          >
             Quay lại trang trước
           </n-button>
-          <n-button type="primary" class="ml-20" @click="router.replace('/')">
+          <n-button
+            type="primary"
+            class="ml-20"
+            @click="router.replace('/')"
+          >
             Về trang chủ
           </n-button>
         </template>

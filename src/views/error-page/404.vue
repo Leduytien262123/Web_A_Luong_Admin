@@ -9,7 +9,11 @@
         size="large"
       >
         <template #footer>
-          <n-button type="primary" ghost @click="replace('/')">
+          <n-button
+            type="primary"
+            ghost
+            @click="replace('/')"
+          >
             Quay về trang chủ
           </n-button>
         </template>

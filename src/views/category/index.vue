@@ -3,19 +3,22 @@
     <template #action>
       <AddReload
         :reset="resetListCategories"
-        :handleAdd="handleAddCategory"
-        :titleAdd="'Thêm danh mục'"
+        :handle-add="handleAddCategory"
+        :title-add="'Thêm danh mục'"
       />
     </template>
 
     <n-card title="Quản lý danh mục">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item label="Tìm kiếm danh mục" class="w-full">
+          <n-form-item
+            label="Tìm kiếm danh mục"
+            class="w-full"
+          >
             <NaiveInput
+              v-model:value="searchQuery"
               clearable
               placeholder="Nhập tìm kiếm ..."
-              v-model:value="searchQuery"
               @keyup.enter="searchData"
               @clear="
                 () => {
@@ -25,7 +28,10 @@
               "
             />
           </n-form-item>
-          <ButtonSearch ref="buttonSearchRef" :searchData="loadCategories" />
+          <ButtonSearch
+            ref="buttonSearchRef"
+            :search-data="loadCategories"
+          />
         </div>
 
         <n-data-table
@@ -34,7 +40,7 @@
           :bordered="true"
           :striped="true"
           :loading="loading"
-          :scroll-x="1500"
+          :scroll-x="1900"
           :row-key="rowKey"
         />
 
@@ -43,7 +49,7 @@
           :page="1"
           :limit="10"
           :name="'danh mục'"
-          :pageSize="10"
+          :page-size="10"
           @change="loadCategories"
         />
       </n-space>
@@ -98,7 +104,7 @@ const columns = [
       return h(
         NTag,
         { type: row.is_active ? "success" : "", size: "small" },
-        { default: () => (row.is_active ? "Hoạt động" : "Dừng hoạt động") }
+        { default: () => (row.is_active ? "Hoạt động" : "Dừng hoạt động") },
       );
     },
   },
@@ -119,12 +125,20 @@ const columns = [
     },
   },
   {
+    title: "Hiển thị ở trang chủ",
+    key: "show_home",
+    align: "center",
+    render(row) {
+      return h(NCheckbox, { checked: row.show_home });
+    },
+  },
+  {
     title: "Thứ tự ở Menu",
     key: "position",
     align: "center",
     width: 150,
     render(row) {
-      return row.position_menu;
+      return row.position_menu > 0 ? row.position_menu : "-";
     },
   },
   {
@@ -133,7 +147,16 @@ const columns = [
     align: "center",
     width: 150,
     render(row) {
-      return row.position_footer;
+      return row.position_footer > 0 ? row.position_footer : "-";
+    },
+  },
+  {
+    title: "Thứ tự ở Trang chủ",
+    key: "position",
+    align: "center",
+    width: 150,
+    render(row) {
+      return row.position_home > 0 ? row.position_home : "-";
     },
   },
   {
@@ -164,7 +187,7 @@ const columns = [
             content: h(IconBin),
             tooltipContent: "Xoá",
           }),
-        ].filter(Boolean)
+        ].filter(Boolean),
       );
     },
   },
@@ -176,7 +199,7 @@ async function loadCategories() {
     loading.value = true;
     const params = {
       page: 1,
-      length: 10,
+      length: 100,
     };
     if (searchQuery.value) {
       params.search = searchQuery.value;

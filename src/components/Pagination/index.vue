@@ -49,9 +49,15 @@ function onUpdatePageSize(newSize) {
 
 <template>
   <div class="mt-16 flex justify-end gap-6">
-    <div class="">Tổng</div>
-    <div class="">{{ total }}</div>
-    <div class="">{{ name }}</div>
+    <div class="">
+      Tổng
+    </div>
+    <div class="">
+      {{ total }}
+    </div>
+    <div class="">
+      {{ name }}
+    </div>
     <n-pagination
       :page="page"
       :page-size="pageSize"

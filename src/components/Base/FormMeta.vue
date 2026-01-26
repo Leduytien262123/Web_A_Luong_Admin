@@ -101,23 +101,23 @@ function handleUpdateFileList(newFileList) {
       <n-form-item label="Meta Title">
         <NaiveInput
           :value="metaTitle"
-          @update:value="emit('update:metaTitle', $event)"
           placeholder="Nhập meta title"
+          @update:value="emit('update:metaTitle', $event)"
         />
       </n-form-item>
       <n-form-item label="Meta Keywords">
         <NaiveInput
           :value="metaKeywords"
-          @update:value="emit('update:metaKeywords', $event)"
           placeholder="Nhập meta keywords"
+          @update:value="emit('update:metaKeywords', $event)"
         />
       </n-form-item>
       <n-form-item label="Meta Description">
         <NaiveInput
           :value="metaDescription"
-          @update:value="emit('update:metaDescription', $event)"
           type="textarea"
           placeholder="Nhập meta description"
+          @update:value="emit('update:metaDescription', $event)"
         />
       </n-form-item>
       <n-form-item label="Meta Image">

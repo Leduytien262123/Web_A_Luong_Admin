@@ -3,23 +3,31 @@
     <template #action>
       <AddReload
         :reset="resetListBlogCategories"
-        :handleAdd="handleAddBlogCategory"
-        :titleAdd="'Tạo danh mục bài viết'"
+        :handle-add="handleAddBlogCategory"
+        :title-add="'Tạo danh mục bài viết'"
       />
     </template>
 
     <n-card title="Quản lý danh mục bài viết">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item label="Tìm kiếm danh mục bài viết" class="w-full">
+          <n-form-item
+            label="Tìm kiếm danh mục bài viết"
+            class="w-full"
+          >
             <NaiveInput
+              v-model:value="searchQuery"
               clearable
               placeholder="Nhập tìm kiếm ..."
-              v-model:value="searchQuery"
               @keyup.enter="throttledLoadBlogCategories"
             />
           </n-form-item>
-          <n-button type="primary" @click="searchData">Tìm kiếm</n-button>
+          <n-button
+            type="primary"
+            @click="searchData"
+          >
+            Tìm kiếm
+          </n-button>
         </div>
 
         <n-data-table
@@ -35,7 +43,7 @@
           :page="1"
           :limit="10"
           :name="'danh mục bài viết'"
-          :pageSize="10"
+          :page-size="10"
           @change="loadBlogCategories"
         />
       </n-space>

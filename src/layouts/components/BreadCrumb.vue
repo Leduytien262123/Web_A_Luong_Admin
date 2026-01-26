@@ -1,6 +1,9 @@
 <template>
   <n-breadcrumb>
-    <n-breadcrumb-item v-if="!breadItems?.length" :clickable="false">
+    <n-breadcrumb-item
+      v-if="!breadItems?.length"
+      :clickable="false"
+    >
       {{ route.meta.title }}
     </n-breadcrumb-item>
     <n-breadcrumb-item
@@ -15,7 +18,10 @@
         @select="handleDropSelect"
       >
         <div class="flex items-center">
-          <i :class="item.icon" class="mr-8" />
+          <i
+            :class="item.icon"
+            class="mr-8"
+          />
           {{ item.name }}
         </div>
       </n-dropdown>

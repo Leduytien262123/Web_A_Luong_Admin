@@ -1,7 +1,10 @@
 <template>
   <CommonPage>
     <div class="flex">
-      <n-spin size="small" :show="treeLoading">
+      <n-spin
+        size="small"
+        :show="treeLoading"
+      >
         <MenuTree
           v-model:current-menu="currentMenu"
           class="w-320 shrink-0"
@@ -16,12 +19,20 @@
             <h3 class="mb-12">
               {{ currentMenu.name }}
             </h3>
-            <NButton size="small" type="primary" @click="handleEdit(currentMenu)">
+            <NButton
+              size="small"
+              type="primary"
+              @click="handleEdit(currentMenu)"
+            >
               <i class="i-material-symbols:edit-outline mr-4 text-14" />
               Sửa
             </NButton>
           </div>
-          <n-descriptions label-placement="left" bordered :column="2">
+          <n-descriptions
+            label-placement="left"
+            bordered
+            :column="2"
+          >
             <n-descriptions-item label="Mã">
               {{ currentMenu.code }}
             </n-descriptions-item>
@@ -35,7 +46,10 @@
               {{ currentMenu.component ?? '--' }}
             </n-descriptions-item>
             <n-descriptions-item label="Icon menu">
-              <span v-if="currentMenu.icon" class="flex items-center">
+              <span
+                v-if="currentMenu.icon"
+                class="flex items-center"
+              >
                 <i :class="`${currentMenu.icon}?mask text-22 mr-8`" />
                 <span class="opacity-50">{{ currentMenu.icon }}</span>
               </span>
@@ -62,7 +76,11 @@
             <h3 class="mb-12">
               Nút bấm
             </h3>
-            <NButton size="small" type="primary" @click="handleAddBtn">
+            <NButton
+              size="small"
+              type="primary"
+              @click="handleAddBtn"
+            >
               <i class="i-fe:plus mr-4 text-14" />
               Thêm mới
             </NButton>
@@ -76,10 +94,19 @@
             :query-items="{ parentId: currentMenu.id }"
           />
         </template>
-        <n-empty v-else class="h-450 f-c-c" size="large" description="Vui lòng chọn menu bên trái" />
+        <n-empty
+          v-else
+          class="h-450 f-c-c"
+          size="large"
+          description="Vui lòng chọn menu bên trái"
+        />
       </div>
     </div>
-    <ResAddOrEdit ref="modalRef" :menus="treeData" @refresh="initData" />
+    <ResAddOrEdit
+      ref="modalRef"
+      :menus="treeData"
+      @refresh="initData"
+    />
   </CommonPage>
 </template>
 

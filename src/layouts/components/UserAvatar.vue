@@ -1,6 +1,12 @@
 <template>
-  <n-dropdown :options="options" @select="handleSelect">
-    <div id="user-dropdown" class="flex cursor-pointer items-center">
+  <n-dropdown
+    :options="options"
+    @select="handleSelect"
+  >
+    <div
+      id="user-dropdown"
+      class="flex cursor-pointer items-center"
+    >
       <n-avatar
         round
         :size="36"
@@ -13,9 +19,7 @@
         <span class="text-14">{{
           userStore.nickName ?? userStore.username
         }}</span>
-        <span class="text-12 opacity-50"
-          >[{{ userStore.currentRole?.name }}]</span
-        >
+        <span class="text-12 opacity-50">[{{ userStore.currentRole?.name }}]</span>
       </div>
     </div>
   </n-dropdown>

@@ -255,14 +255,25 @@ async function handleSave() {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? 'Sửa sản phẩm' : 'Thêm sản phẩm'">
-      <n-form :model="formValue" :rules="rules" ref="formRef">
-        <n-grid cols="3" x-gap="16" y-gap="16">
+      <n-form
+        ref="formRef"
+        :model="formValue"
+        :rules="rules"
+      >
+        <n-grid
+          cols="3"
+          x-gap="16"
+          y-gap="16"
+        >
           <n-grid-item span="3">
-            <n-form-item label="Tên sản phẩm" path="name">
+            <n-form-item
+              label="Tên sản phẩm"
+              path="name"
+            >
               <NaiveInput
                 v-model:value="formValue.name"
                 placeholder="Nhập tên sản phẩm"
@@ -271,7 +282,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="2">
-            <n-form-item label="Đường dẫn" path="slug">
+            <n-form-item
+              label="Đường dẫn"
+              path="slug"
+            >
               <NaiveInput
                 v-model:value="formValue.slug"
                 placeholder="Nhập đường dẫn"
@@ -281,7 +295,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Danh mục" path="category_id">
+            <n-form-item
+              label="Danh mục"
+              path="category_id"
+            >
               <NaiveSelect
                 v-model:value="formValue.category_id"
                 :options="categories"
@@ -293,7 +310,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="SKU" path="sku">
+            <n-form-item
+              label="SKU"
+              path="sku"
+            >
               <NaiveInput
                 v-model:value="formValue.sku"
                 placeholder="Nhập sku"
@@ -303,7 +323,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Giá" path="price">
+            <n-form-item
+              label="Giá"
+              path="price"
+            >
               <NaiveInputNumber
                 v-model:value="formValue.price"
                 :show-button="false"
@@ -315,7 +338,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Giá sale" path="discount_price">
+            <n-form-item
+              label="Giá sale"
+              path="discount_price"
+            >
               <NaiveInputNumber
                 v-model:value="formValue.discount_price"
                 :show-button="false"
@@ -327,7 +353,10 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item label="Mô tả" path="description">
+            <n-form-item
+              label="Mô tả"
+              path="description"
+            >
               <NaiveInput
                 v-model:value="formValue.description"
                 type="textarea"
@@ -337,30 +366,37 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item label="Trạng thái" path="is_active">
+            <n-form-item
+              label="Trạng thái"
+              path="is_active"
+            >
               <n-switch v-model:value="formValue.is_active">
-                <template #checked> Hoạt động </template>
-                <template #unchecked> Không hoạt động </template>
+                <template #checked>
+                  Hoạt động
+                </template>
+                <template #unchecked>
+                  Không hoạt động
+                </template>
               </n-switch>
             </n-form-item>
           </n-grid-item>
 
           <n-grid-item span="3">
             <FormMeta
-              v-model:metaTitle="formValue.metadata.meta_title"
-              v-model:metaKeywords="formValue.metadata.meta_keywords"
-              v-model:metaDescription="formValue.metadata.meta_description"
-              v-model:metaImage="formValue.metadata.meta_image"
+              v-model:meta-title="formValue.metadata.meta_title"
+              v-model:meta-keywords="formValue.metadata.meta_keywords"
+              v-model:meta-description="formValue.metadata.meta_description"
+              v-model:meta-image="formValue.metadata.meta_image"
             />
           </n-grid-item>
 
           <n-grid-item span="3">
             <ContentBlog
-              :title="'Nội dung sản phẩm'"
-              v-model:coverPhoto="formValue.content.cover_photo"
+              v-model:cover-photo="formValue.content.cover_photo"
               v-model:images="formValue.content.images"
               v-model:description="formValue.content.description"
               v-model:content="formValue.content.content"
+              :title="'Nội dung sản phẩm'"
             />
           </n-grid-item>
         </n-grid>
@@ -368,9 +404,9 @@ async function handleSave() {
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
         />
       </template>
     </n-card>

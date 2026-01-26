@@ -7,8 +7,15 @@
       :label-width="100"
       :model="modalForm"
     >
-      <n-grid :cols="24" :x-gap="24">
-        <n-form-item-gi :span="12" label="Menu thuộc về" path="parentId">
+      <n-grid
+        :cols="24"
+        :x-gap="24"
+      >
+        <n-form-item-gi
+          :span="12"
+          label="Menu thuộc về"
+          path="parentId"
+        >
           <n-tree-select
             v-model:value="modalForm.parentId"
             :options="menuOptions"
@@ -19,15 +26,29 @@
             clearable
           />
         </n-form-item-gi>
-        <n-form-item-gi :span="12" path="name" :rule="required">
+        <n-form-item-gi
+          :span="12"
+          path="name"
+          :rule="required"
+        >
           <template #label>
-            <QuestionLabel label="Tên" content="Tiêu đề" />
+            <QuestionLabel
+              label="Tên"
+              content="Tiêu đề"
+            />
           </template>
           <n-input v-model:value="modalForm.name" />
         </n-form-item-gi>
-        <n-form-item-gi :span="12" path="code" :rule="required">
+        <n-form-item-gi
+          :span="12"
+          path="code"
+          :rule="required"
+        >
           <template #label>
-            <QuestionLabel label="Mã" content="Nếu là menu thì tương ứng với name của route frontend, sử dụng PascalCase" />
+            <QuestionLabel
+              label="Mã"
+              content="Nếu là menu thì tương ứng với name của route frontend, sử dụng PascalCase"
+            />
           </template>
           <n-input v-model:value="modalForm.code" />
         </n-form-item-gi>
@@ -48,29 +69,53 @@
           }"
         >
           <template #label>
-            <QuestionLabel label="Địa chỉ route" content="Menu cha có thể không cần điền" />
+            <QuestionLabel
+              label="Địa chỉ route"
+              content="Menu cha có thể không cần điền"
+            />
           </template>
           <n-input v-model:value="modalForm.path" />
         </n-form-item-gi>
-        <n-form-item-gi v-if="modalForm.type === 'MENU'" :span="12" path="icon">
+        <n-form-item-gi
+          v-if="modalForm.type === 'MENU'"
+          :span="12"
+          path="icon"
+        >
           <template #label>
             <QuestionLabel
               label="Icon menu"
               content="Như material-symbols:help，thư viện icon: https://icones.js.org/collection/all"
             />
           </template>
-          <n-select v-model:value="modalForm.icon" :options="iconOptions" clearable filterable />
+          <n-select
+            v-model:value="modalForm.icon"
+            :options="iconOptions"
+            clearable
+            filterable
+          />
         </n-form-item-gi>
-        <n-form-item-gi v-if="modalForm.type === 'MENU'" :span="12" path="layout">
+        <n-form-item-gi
+          v-if="modalForm.type === 'MENU'"
+          :span="12"
+          path="layout"
+        >
           <template #label>
             <QuestionLabel
               label="layout"
               content="Tương ứng với tên thư mục trong layouts, để trống thì mặc định là default"
             />
           </template>
-          <n-select v-model:value="modalForm.layout" :options="layoutOptions" clearable />
+          <n-select
+            v-model:value="modalForm.layout"
+            :options="layoutOptions"
+            clearable
+          />
         </n-form-item-gi>
-        <n-form-item-gi v-if="modalForm.type === 'MENU'" :span="24" path="component">
+        <n-form-item-gi
+          v-if="modalForm.type === 'MENU'"
+          :span="24"
+          path="component"
+        >
           <template #label>
             <QuestionLabel
               label="Đường dẫn component"
@@ -86,9 +131,16 @@
           />
         </n-form-item-gi>
 
-        <n-form-item-gi v-if="modalForm.type === 'MENU'" :span="12" path="show">
+        <n-form-item-gi
+          v-if="modalForm.type === 'MENU'"
+          :span="12"
+          path="show"
+        >
           <template #label>
-            <QuestionLabel label="Trạng thái hiển thị" content="Kiểm soát có hiển thị trong thanh menu hay không, không ảnh hưởng đến đăng ký route" />
+            <QuestionLabel
+              label="Trạng thái hiển thị"
+              content="Kiểm soát có hiển thị trong thanh menu hay không, không ảnh hưởng đến đăng ký route"
+            />
           </template>
           <n-switch v-model:value="modalForm.show">
             <template #checked>
@@ -99,7 +151,10 @@
             </template>
           </n-switch>
         </n-form-item-gi>
-        <n-form-item-gi :span="12" path="enable">
+        <n-form-item-gi
+          :span="12"
+          path="enable"
+        >
           <template #label>
             <QuestionLabel
               label="Trạng thái"
@@ -115,7 +170,11 @@
             </template>
           </n-switch>
         </n-form-item-gi>
-        <n-form-item-gi v-if="modalForm.type === 'MENU'" :span="12" path="keepAlive">
+        <n-form-item-gi
+          v-if="modalForm.type === 'MENU'"
+          :span="12"
+          path="keepAlive"
+        >
           <template #label>
             <QuestionLabel
               label="KeepAlive"

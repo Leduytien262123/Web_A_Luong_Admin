@@ -2,11 +2,17 @@
   <CommonPage>
     <template #action>
       <div class="flex justìy-end gap-12">
-        <NButton type="info" @click="resetListOrders">
+        <NButton
+          type="info"
+          @click="resetListOrders"
+        >
           <i class="i-material-symbols:refresh mr-4 text-18" />
           Tải lại danh sách
         </NButton>
-        <NButton type="primary" @click="handleAddOrder">
+        <NButton
+          type="primary"
+          @click="handleAddOrder"
+        >
           <i class="i-material-symbols:add mr-4 text-18" />
           Thêm đơn hàng
         </NButton>
@@ -16,13 +22,17 @@
     <n-card title="Quản lý đơn hàng">
       <n-space vertical>
         <div class="flex mb-8">
-          <n-grid cols="3" x-gap="12" y-gap="12">
+          <n-grid
+            cols="3"
+            x-gap="12"
+            y-gap="12"
+          >
             <n-grid-item span="1">
               <n-form-item label="Mã đơn hàng">
                 <NaiveInput
+                  v-model:value="searchQuery.order_code"
                   clearable
                   placeholder="Mã đơn hàng ..."
-                  v-model:value="searchQuery.order_code"
                   @keyup.enter="searchData"
                 />
               </n-form-item>
@@ -31,9 +41,9 @@
             <n-grid-item span="1">
               <n-form-item label="Khách hàng">
                 <NaiveInput
+                  v-model:value="searchQuery.customer"
                   clearable
                   placeholder="Tên khách hàng or Số điện thoại ..."
-                  v-model:value="searchQuery.customer"
                   @keyup.enter="searchData"
                 />
               </n-form-item>
@@ -43,11 +53,11 @@
               <n-form-item label="Loại đơn hàng">
                 <NaiveSelect
                   v-model:value="searchQuery.type_order"
-                  @update:value="searchByQuery"
                   :options="typeOrders"
                   filterable
                   placeholder="Tất cả loại đơn"
                   clearable
+                  @update:value="searchByQuery"
                 />
               </n-form-item>
             </n-grid-item>
@@ -56,11 +66,11 @@
               <n-form-item label="Trạng thái xử lý">
                 <NaiveSelect
                   v-model:value="searchQuery.status"
-                  @update:value="searchByQuery"
                   filterable
                   placeholder="Tất cả trạng thái"
                   clearable
                   :options="optionsStatus"
+                  @update:value="searchByQuery"
                 />
               </n-form-item>
             </n-grid-item>
@@ -69,11 +79,11 @@
               <n-form-item label="Trạng thái thanh toán">
                 <NaiveSelect
                   v-model:value="searchQuery.payment_status"
-                  @update:value="searchByQuery"
                   filterable
                   placeholder="Tất cả thanh toán"
                   clearable
                   :options="optionsPayment"
+                  @update:value="searchByQuery"
                 />
               </n-form-item>
             </n-grid-item>
@@ -82,11 +92,11 @@
               <n-form-item label="Người tạo đơn">
                 <NaiveSelect
                   v-model:value="searchQuery.creator"
-                  @update:value="searchByQuery"
                   filterable
                   placeholder="Tất cả người tạo"
                   clearable
                   :options="creater"
+                  @update:value="searchByQuery"
                 />
               </n-form-item>
             </n-grid-item>
@@ -95,20 +105,26 @@
               <n-form-item label="Ngày tạo">
                 <NaiveDatePicker
                   v-model:value="searchQuery.range"
-                  @update:value="searchByQuery"
                   type="daterange"
                   clearable
                   class="w-full"
+                  @update:value="searchByQuery"
                 />
               </n-form-item>
             </n-grid-item>
 
             <n-grid-item span="3">
               <div class="flex gap-12 justify-end">
-                <n-button type="success" @click="exportExcel"
-                  >Xuất file</n-button
+                <n-button
+                  type="success"
+                  @click="exportExcel"
                 >
-                <ButtonSearch ref="buttonSearchRef" :searchData="loadOrders" />
+                  Xuất file
+                </n-button>
+                <ButtonSearch
+                  ref="buttonSearchRef"
+                  :search-data="loadOrders"
+                />
               </div>
             </n-grid-item>
           </n-grid>
@@ -128,7 +144,7 @@
             :page="1"
             :limit="10"
             :name="'sản phẩm'"
-            :pageSize="10"
+            :page-size="10"
             @change="loadOrders"
           />
         </div>

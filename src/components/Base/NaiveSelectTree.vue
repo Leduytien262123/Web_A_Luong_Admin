@@ -17,7 +17,7 @@ const emit = defineEmits(["update:value"]);
 <template>
   <n-tree-select
     :value="value"
-    @update:value="emit('update:value', $event)"
     :options="options"
+    @update:value="emit('update:value', $event)"
   />
 </template>

@@ -21,7 +21,11 @@ defineExpose({ search: handleClick });
 </script>
 
 <template>
-  <n-button type="primary" :disabled="isWaiting" @click="handleClick"
-    >Tìm kiếm</n-button
+  <n-button
+    type="primary"
+    :disabled="isWaiting"
+    @click="handleClick"
   >
+    Tìm kiếm
+  </n-button>
 </template>

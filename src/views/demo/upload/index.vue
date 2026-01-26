@@ -17,18 +17,42 @@
       </n-upload-dragger>
     </n-upload>
 
-    <n-card v-if="imgList && imgList.length" class="mt-16 items-center">
+    <n-card
+      v-if="imgList && imgList.length"
+      class="mt-16 items-center"
+    >
       <n-image-group>
-        <n-space justify="space-between" align="center">
-          <n-card v-for="(item, index) in imgList" :key="index" class="w-280 hover:card-shadow">
+        <n-space
+          justify="space-between"
+          align="center"
+        >
+          <n-card
+            v-for="(item, index) in imgList"
+            :key="index"
+            class="w-280 hover:card-shadow"
+          >
             <div class="h-160 f-c-c">
-              <n-image width="200" :src="item.url" />
+              <n-image
+                width="200"
+                :src="item.url"
+              />
             </div>
-            <n-space class="mt-16" justify="space-evenly">
-              <n-button dashed type="primary" @click="copy(item.url)">
+            <n-space
+              class="mt-16"
+              justify="space-evenly"
+            >
+              <n-button
+                dashed
+                type="primary"
+                @click="copy(item.url)"
+              >
                 url
               </n-button>
-              <n-button dashed type="primary" @click="copy(`![${item.fileName}](${item.url})`)">
+              <n-button
+                dashed
+                type="primary"
+                @click="copy(`![${item.fileName}](${item.url})`)"
+              >
                 MD
               </n-button>
               <n-button
@@ -40,7 +64,11 @@
               </n-button>
             </n-space>
           </n-card>
-          <div v-for="i in 4" :key="i" class="w-280" />
+          <div
+            v-for="i in 4"
+            :key="i"
+            class="w-280"
+          />
         </n-space>
       </n-image-group>
     </n-card>

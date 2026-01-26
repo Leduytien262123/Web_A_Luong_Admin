@@ -1,4 +1,6 @@
 <script setup>
+import NaiveUpload2 from "./NaiveUpload2.vue";
+
 const props = defineProps({
   title: {
     type: String,
@@ -9,7 +11,7 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
-  images: {
+  files: {
     type: Array,
     required: false,
     default: () => [],
@@ -26,7 +28,7 @@ const props = defineProps({
 
 const emit = defineEmits([
   "update:coverPhoto",
-  "update:images",
+  "update:files",
   "update:description",
   "update:content",
 ]);
@@ -49,7 +51,7 @@ const descriptionComputed = computed({
   },
 });
 
-function mapToMetaImages(list) {
+function mapToMetaFiles(list) {
   return (list || []).map((f) => ({
     url: f.url || "",
     alt: f.alt || "",
@@ -61,47 +63,47 @@ function mapToFileList(list) {
     url: f.url || "",
     thumbUrl: f.url || "",
     alt: f.alt || "",
-    uid: f.uid || `img-${Date.now()}-${idx}`,
-    name: f.name || f.alt || `image-${idx}`,
+    uid: f.uid || `file-${Date.now()}-${idx}`,
+    name: f.name || f.alt || `file-${idx}`,
     status: f.status || "finished",
   }));
 }
 
 const coverPhotoList = ref(mapToFileList(props.coverPhoto || []));
-const imagesList = ref(mapToFileList(props.images || []));
+const fileList = ref(mapToFileList(props.files || []));
 
 watch(
   () => props.coverPhoto,
   (newVal) => {
     if (
-      JSON.stringify(mapToMetaImages(newVal)) !==
-      JSON.stringify(mapToMetaImages(coverPhotoList.value))
+      JSON.stringify(mapToMetaFiles(newVal)) !==
+      JSON.stringify(mapToMetaFiles(coverPhotoList.value))
     ) {
       coverPhotoList.value = mapToFileList(newVal || []);
-      emit("update:coverPhoto", mapToMetaImages(coverPhotoList.value));
+      emit("update:coverPhoto", mapToMetaFiles(coverPhotoList.value));
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 watch(
-  () => props.images,
+  () => props.files,
   (newVal) => {
     if (
-      JSON.stringify(mapToMetaImages(newVal)) !==
-      JSON.stringify(mapToMetaImages(imagesList.value))
+      JSON.stringify(mapToMetaFiles(newVal)) !==
+      JSON.stringify(mapToMetaFiles(fileList.value))
     ) {
-      imagesList.value = mapToFileList(newVal || []);
-      emit("update:images", mapToMetaImages(imagesList.value));
+      fileList.value = mapToFileList(newVal || []);
+      emit("update:files", mapToMetaFiles(fileList.value));
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 function handleCoverUploadSuccess(file) {
-  const imageObj = mapToFileList([file])[0];
-  coverPhotoList.value = [imageObj];
-  emit("update:coverPhoto", mapToMetaImages(coverPhotoList.value));
+  const fileObj = mapToFileList([file])[0];
+  coverPhotoList.value = [fileObj];
+  emit("update:coverPhoto", mapToMetaFiles(coverPhotoList.value));
 }
 
 function handleRemoveCover() {
@@ -114,25 +116,25 @@ function handleUpdateCoverList(newList) {
   if (coverPhotoList.value.length === 0) {
     emit("update:coverPhoto", []);
   } else {
-    emit("update:coverPhoto", mapToMetaImages(newList));
+    emit("update:coverPhoto", mapToMetaFiles(newList));
   }
 }
 
-function handleImagesUploadSuccess(file) {
-  const imageObj = mapToFileList([file])[0];
-  imagesList.value = [...imagesList.value, imageObj];
-  emit("update:images", mapToMetaImages(imagesList.value));
+function handleFileUploadSuccess(file) {
+  const fileObj = mapToFileList([file])[0];
+  fileList.value = [...fileList.value, fileObj];
+  emit("update:files", mapToMetaFiles(fileList.value));
 }
 
-function handleRemoveImages(removedFile) {
+function handleRemoveFile(removedFile) {
   if (!removedFile) return;
-  imagesList.value = imagesList.value.filter((f) => f.uid !== removedFile.uid);
-  emit("update:images", mapToMetaImages(imagesList.value));
+  fileList.value = fileList.value.filter((f) => f.uid !== removedFile.uid);
+  emit("update:files", mapToMetaFiles(fileList.value));
 }
 
-function handleUpdateImagesList(newList) {
-  imagesList.value = newList;
-  emit("update:images", mapToMetaImages(imagesList.value));
+function handleUpdateFileList(newList) {
+  fileList.value = newList;
+  emit("update:files", mapToMetaFiles(fileList.value));
 }
 </script>
 
@@ -147,31 +149,27 @@ function handleUpdateImagesList(newList) {
       :title="title"
       name="content"
     >
-      <n-form-item label="Ảnh bìa">
-        <NaiveUpload
-          :file-list="coverPhotoList"
-          :max="1"
-          list-type="image-card"
-          @update:file-list="handleUpdateCoverList"
-          @upload-success="handleCoverUploadSuccess"
-          @remove="handleRemoveCover"
-        />
-      </n-form-item>
-      <n-form-item label="Ảnh">
-        <NaiveUpload
-          :file-list="imagesList"
+      <n-form-item label="Tải lên tài liệu">
+        <NaiveUpload2
+          :file-list="fileList"
           :multiple="true"
-          list-type="image-card"
-          @update:file-list="handleUpdateImagesList"
-          @upload-success="handleImagesUploadSuccess"
-          @remove="handleRemoveImages"
+          @update:file-list="handleUpdateFileList"
+          @upload-success="handleFileUploadSuccess"
+          @remove="handleRemoveFile"
         />
       </n-form-item>
+
       <n-form-item label="Mô tả ngắn">
-        <RichEditorTiny :height="300" v-model="descriptionComputed" />
+        <RichEditorTiny
+          v-model="descriptionComputed"
+          :height="300"
+        />
       </n-form-item>
       <n-form-item label="Bài viết">
-        <RichEditor :height="500" v-model="contentComputed" />
+        <RichEditor
+          v-model="contentComputed"
+          :height="500"
+        />
       </n-form-item>
     </n-collapse-item>
   </n-collapse>

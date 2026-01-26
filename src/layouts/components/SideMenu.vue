@@ -16,6 +16,7 @@
 <script setup>
 import { useAppStore, usePermissionStore } from "@/store";
 import { isExternal } from "@/utils";
+import { h } from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -70,8 +71,8 @@ const activeKey = computed(() => {
   return route.name;
 });
 
-// Cấu trúc menu đúng format cho Naive UI
-const menuOptions = computed(() => [
+// Raw menu definition (keeps labels/keys/paths)
+const rawMenu = [
   {
     label: "Dashboard",
     key: "dashboard",
@@ -96,36 +97,78 @@ const menuOptions = computed(() => [
         key: "tag",
         path: "/tag",
       },
-      // {
-      //   label: "FAQ",
-      //   key: "faq",
-      //   path: "/faq",
-      // },
     ],
   },
-  {
-    label: "Quản lý người dùng",
-    key: "user-management",
-    children: [
-      {
-        label: "Quản lý người dùng",
-        key: "user",
-        path: "/user",
-      },
-    ],
-  },
+  // {
+  //   label: "Quản lý người dùng",
+  //   key: "user-management",
+  //   children: [
+  //     {
+  //       label: "Quản lý người dùng",
+  //       key: "user",
+  //       path: "/user",
+  //     },
+  //   ],
+  // },
   {
     label: "Quản lý hệ thống",
     key: "system-management",
     children: [
+      // {
+      //   label: "Nhật ký hoạt động",
+      //   key: "operation-log",
+      //   path: "/configs/operation-log",
+      // },
       {
-        label: "Nhật ký hoạt động",
-        key: "operation-log",
-        path: "/pms/operation-log",
+        label: "Cấu hình trang chủ",
+        key: "home-configuration",
+        path: "/configs/home-configuration",
       },
     ],
   },
-]);
+];
+
+// Mapping từ key/label sang Uno icon class (bằng Iconify / UnoCSS syntax)
+function getUnoIconClass(nameOrKey) {
+  if (!nameOrKey) return "i-ic:baseline-label";
+  const key = String(nameOrKey).toLowerCase();
+  const map = {
+    dashboard: "i-ic:baseline-dashboard",
+    "post-management": "i-ic:baseline-description",
+    "quản lý bài viết": "i-ic:baseline-description",
+    category: "i-ic:baseline-folder",
+    "danh mục": "i-ic:baseline-folder",
+    articles: "i-ic:baseline-article",
+    "bài viết": "i-ic:baseline-article",
+    tag: "i-ic:baseline-label",
+    user: "i-ic:baseline-person",
+    "user-management": "i-ic:baseline-people",
+    "quản lý người dùng": "i-ic:baseline-people",
+    "system-management": "i-ic:baseline-settings",
+    "quản lý hệ thống": "i-ic:baseline-settings",
+    "operation-log": "i-ic:baseline-history",
+    "nhật ký hoạt động": "i-ic:baseline-history",
+    "home-configuration": "i-ic:baseline-settings",
+    "cấu hình trang chủ": "i-ic:baseline-settings",
+  };
+  return map[key] || `i-ic:baseline-label`;
+}
+
+// Build options for Naive UI, injecting an <i> element with Uno icon class
+function buildOptions(items) {
+  return items.map((it) => {
+    const iconClass = getUnoIconClass(it.key || it.label);
+    const option = {
+      ...it,
+      icon: () => h("i", { class: iconClass }),
+    };
+    if (it.children) option.children = buildOptions(it.children);
+    return option;
+  });
+}
+
+// Cấu trúc menu đúng format cho Naive UI (với Uno icons)
+const menuOptions = computed(() => buildOptions(rawMenu));
 
 // Tìm menu item theo key
 function findMenuItem(options, key) {
@@ -181,7 +224,7 @@ watch(
   () => {
     nextTick(() => {});
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
@@ -196,5 +239,31 @@ watch(
       border-left: 4px solid rgb(var(--primary-color));
     }
   }
+}
+
+.side-menu i {
+  display: inline-block;
+  width: 18px;
+  text-align: center;
+  margin-right: 8px;
+  line-height: 1;
+}
+
+/* Ensure Naive UI menu icons get 32x32 — target container and inner icon */
+.side-menu .n-menu-item-content__icon,
+.side-menu .n-menu-item-content__icon > * {
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-block !important;
+  line-height: 24px !important;
+}
+
+/* Fallback for different Naive UI class names */
+.side-menu .n-menu-item__icon,
+.side-menu .n-menu-item__icon > * {
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-block !important;
+  line-height: 24px !important;
 }
 </style>

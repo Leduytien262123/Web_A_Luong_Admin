@@ -1,6 +1,9 @@
 <template>
   <div>
-    <n-tooltip trigger="hover" placement="left">
+    <n-tooltip
+      trigger="hover"
+      placement="left"
+    >
       <template #trigger>
         <div
           id="layout-setting"
@@ -25,9 +28,15 @@
           @click="appStore.setLayout('simple')"
         >
           <div class="flex">
-            <n-skeleton :width="20" :height="60" />
+            <n-skeleton
+              :width="20"
+              :height="60"
+            />
             <div class="ml-4">
-              <n-skeleton :width="80" :height="60" />
+              <n-skeleton
+                :width="80"
+                :height="60"
+              />
             </div>
           </div>
           <n-button
@@ -44,10 +53,20 @@
           @click="appStore.setLayout('normal')"
         >
           <div class="flex">
-            <n-skeleton :width="20" :height="60" />
+            <n-skeleton
+              :width="20"
+              :height="60"
+            />
             <div class="ml-4">
-              <n-skeleton :width="80" :height="10" />
-              <n-skeleton class="mt-4" :width="80" :height="46" />
+              <n-skeleton
+                :width="80"
+                :height="10"
+              />
+              <n-skeleton
+                class="mt-4"
+                :width="80"
+                :height="46"
+              />
             </div>
           </div>
           <n-button
@@ -64,10 +83,20 @@
           @click="appStore.setLayout('full')"
         >
           <div class="flex">
-            <n-skeleton :width="20" :height="60" />
+            <n-skeleton
+              :width="20"
+              :height="60"
+            />
             <div class="ml-4">
-              <n-skeleton :width="80" :height="10" />
-              <n-skeleton class="mt-4" :width="80" :height="46" />
+              <n-skeleton
+                :width="80"
+                :height="10"
+              />
+              <n-skeleton
+                class="mt-4"
+                :width="80"
+                :height="46"
+              />
             </div>
           </div>
           <n-button
@@ -84,9 +113,15 @@
           @click="appStore.setLayout('empty')"
         >
           <div class="flex">
-            <n-skeleton :width="20" :height="60" />
+            <n-skeleton
+              :width="20"
+              :height="60"
+            />
             <div class="ml-4">
-              <n-skeleton :width="80" :height="60" />
+              <n-skeleton
+                :width="80"
+                :height="60"
+              />
             </div>
           </div>
           <n-button

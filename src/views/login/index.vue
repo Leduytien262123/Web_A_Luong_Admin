@@ -10,12 +10,15 @@
           src="@/assets/images/login_banner.webp"
           class="w-full"
           alt="login_banner"
-        />
+        >
       </div>
 
       <div class="w-320 flex-col px-20 py-32">
         <h2 class="f-c-c text-24 text-#6a6a6a font-normal">
-          <img src="@/assets/images/logo.png" class="mr-12 h-50" />
+          <img
+            src="@/assets/images/logo.png"
+            class="mr-12 h-50"
+          >
           {{ title }}
         </h2>
         <n-input
@@ -62,7 +65,7 @@
             height="40"
             class="ml-12 w-80 cursor-pointer"
             @click="initCaptcha"
-          />
+          >
         </div>
 
         <n-checkbox

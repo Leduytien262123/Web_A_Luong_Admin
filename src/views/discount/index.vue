@@ -3,47 +3,61 @@
     <template #action>
       <AddReload
         :reset="resetListDiscounts"
-        :handleAdd="handleAddDiscount"
-        :titleAdd="'Thêm mã giảm giá'"
+        :handle-add="handleAddDiscount"
+        :title-add="'Thêm mã giảm giá'"
       />
     </template>
 
     <n-card title="Quản lý mã giảm giá">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item label="Tìm kiếm mã giảm giá" class="w-[40%]">
+          <n-form-item
+            label="Tìm kiếm mã giảm giá"
+            class="w-[40%]"
+          >
             <NaiveInput
+              v-model:value="searchQuery.search"
               class="w-full"
               clearable
               placeholder="Nhập tìm kiếm ..."
-              v-model:value="searchQuery.search"
               @keyup.enter="throttledLoaddiscounts"
               @clear="onInputClear"
             />
           </n-form-item>
-          <n-form-item label="Loại giảm giá" class="w-[30%]">
+          <n-form-item
+            label="Loại giảm giá"
+            class="w-[30%]"
+          >
             <NaiveSelect
-              class="w-full"
               v-model:value="searchQuery.type"
-              @update:value="searchByQueryValue"
+              class="w-full"
               :options="type_discount"
               filterable
               placeholder="Tất cả loại giảm giá"
               clearable
+              @update:value="searchByQueryValue"
             />
           </n-form-item>
-          <n-form-item label="Trạng thái" class="w-[30%]">
+          <n-form-item
+            label="Trạng thái"
+            class="w-[30%]"
+          >
             <NaiveSelect
-              class="w-full"
               v-model:value="searchQuery.status"
-              @update:value="searchByQueryValue"
+              class="w-full"
               :options="status_discount"
               filterable
               placeholder="Tất cả trạng thái"
               clearable
+              @update:value="searchByQueryValue"
             />
           </n-form-item>
-          <n-button type="primary" @click="searchData">Tìm kiếm</n-button>
+          <n-button
+            type="primary"
+            @click="searchData"
+          >
+            Tìm kiếm
+          </n-button>
         </div>
 
         <n-data-table
@@ -59,7 +73,7 @@
           :page="1"
           :limit="10"
           :name="'mã giảm giá'"
-          :pageSize="10"
+          :page-size="10"
           @change="loadDiscounts"
         />
       </n-space>
@@ -74,11 +88,11 @@
 
     <ModalUpdateDiscount
       :title="getModalTitle()"
-      :showModal="updateStatusData.show"
+      :show-modal="updateStatusData.show"
       :loading="updateStatusData.loading"
+      :is-status-discount="true"
       @on-cancel="updateStatusData.show = false"
       @on-confirm="confirmUpdateStatus"
-      :isStatusDiscount="true"
     />
   </CommonPage>
 </template>

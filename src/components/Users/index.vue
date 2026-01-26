@@ -3,24 +3,27 @@
     <template #action>
       <AddReload
         :reset="resetListUsers"
-        :handleAdd="handleAddUser"
-        :titleAdd="`Thêm ${context}`"
+        :handle-add="handleAddUser"
+        :title-add="`Thêm ${context}`"
       />
     </template>
 
     <n-card :title="`Danh sách ${context}`">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item :label="`Tìm kiếm ${context}`" class="w-full">
+          <n-form-item
+            :label="`Tìm kiếm ${context}`"
+            class="w-full"
+          >
             <NaiveInput
+              v-model:value="searchQuery.name"
               class="w-full"
               clearable
               placeholder="Nhập tìm kiếm theo tên, số điện thoại, email ..."
-              v-model:value="searchQuery.name"
               @keyup.enter="throttledLoadUsers"
             />
           </n-form-item>
-          <ButtonSearch :searchData />
+          <ButtonSearch :search-data />
         </div>
 
         <n-spin :show="loading">

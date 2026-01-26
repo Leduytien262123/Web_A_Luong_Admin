@@ -1,7 +1,10 @@
 <template>
   <CommonPage>
     <template #action>
-      <NButton type="primary" @click="handleAdd()">
+      <NButton
+        type="primary"
+        @click="handleAdd()"
+      >
         <i class="i-material-symbols:add mr-4 text-18" />
         Thêm vai trò
       </NButton>
@@ -14,11 +17,22 @@
       :columns="columns"
       :get-data="api.read"
     >
-      <MeQueryItem label="Tên vai trò" :label-width="80">
-        <n-input v-model:value="queryItems.name" type="text" placeholder="Nhập tên vai trò" clearable />
+      <MeQueryItem
+        label="Tên vai trò"
+        :label-width="80"
+      >
+        <n-input
+          v-model:value="queryItems.name"
+          type="text"
+          placeholder="Nhập tên vai trò"
+          clearable
+        />
       </MeQueryItem>
 
-      <MeQueryItem label="Trạng thái" :label-width="50">
+      <MeQueryItem
+        label="Trạng thái"
+        :label-width="50"
+      >
         <n-select
           v-model:value="queryItems.enable"
           clearable
@@ -29,7 +43,10 @@
         />
       </MeQueryItem>
     </MeCrud>
-    <MeModal ref="modalRef" width="520px">
+    <MeModal
+      ref="modalRef"
+      width="520px"
+    >
       <n-form
         ref="modalFormRef"
         label-placement="left"
@@ -57,9 +74,15 @@
             trigger: ['input', 'blur'],
           }"
         >
-          <n-input v-model:value="modalForm.code" :disabled="modalAction !== 'add'" />
+          <n-input
+            v-model:value="modalForm.code"
+            :disabled="modalAction !== 'add'"
+          />
         </n-form-item>
-        <n-form-item label="Quyền" path="permissionIds">
+        <n-form-item
+          label="Quyền"
+          path="permissionIds"
+        >
           <n-tree
             key-field="id"
             label-field="name"
@@ -68,11 +91,16 @@
             :checked-keys="modalForm.permissionIds"
             :on-update:checked-keys="(keys) => (modalForm.permissionIds = keys)"
 
-            checkable check-on-click default-expand-all
+            checkable
+            check-on-click
+            default-expand-all
             class="cus-scroll max-h-200 w-full"
           />
         </n-form-item>
-        <n-form-item label="Trạng thái" path="enable">
+        <n-form-item
+          label="Trạng thái"
+          path="enable"
+        >
           <NSwitch v-model:value="modalForm.enable">
             <template #checked>
               Kích hoạt

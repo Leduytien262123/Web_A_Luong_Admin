@@ -1,6 +1,9 @@
 <template>
   <div class="f-c-c">
-    <n-tooltip trigger="hover" placement="bottom">
+    <n-tooltip
+      trigger="hover"
+      placement="bottom"
+    >
       <template #trigger>
         <n-color-picker
           id="theme-setting"

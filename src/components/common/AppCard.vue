@@ -7,7 +7,10 @@
  --------------------------------->
 
 <template>
-  <div class="auto-bg" :class="{ 'card-border': bordered }">
+  <div
+    class="auto-bg"
+    :class="{ 'card-border': bordered }"
+  >
     <slot />
   </div>
 </template>

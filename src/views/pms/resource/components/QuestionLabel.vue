@@ -1,6 +1,9 @@
 <template>
   <span class="flex items-center">
-    <n-popover v-if="content" trigger="hover">
+    <n-popover
+      v-if="content"
+      trigger="hover"
+    >
       <template #trigger>
         <i class="i-material-symbols:help mr-4" />
       </template>

@@ -24,6 +24,7 @@ const categoryForm = ref({
   show_footer: false,
   position_menu: null,
   position_footer: null,
+  position_home: null,
   metadata: {
     meta_title: "",
     meta_keywords: "",
@@ -66,7 +67,7 @@ watch(
     if (newName) {
       categoryForm.value.slug = generateSlug(newName);
     }
-  }
+  },
 );
 
 async function loadCategory() {
@@ -87,6 +88,7 @@ async function loadCategory() {
         show_footer: data.show_footer,
         position_menu: data.position_menu,
         position_footer: data.position_footer,
+        position_home: data.position_home,
         metadata: {
           meta_title: data.metadata?.meta_title || "",
           meta_keywords: data.metadata?.meta_keywords || "",
@@ -113,6 +115,25 @@ async function handleSave() {
     await formRef.value?.validate();
 
     loading.value = true;
+
+    if (categoryForm.value.show_menu) {
+      categoryForm.value.position_menu = categoryForm.value.position_menu ?? 0;
+    } else {
+      categoryForm.value.position_menu = 0;
+    }
+
+    if (categoryForm.value.show_footer) {
+      categoryForm.value.position_footer =
+        categoryForm.value.position_footer ?? 0;
+    } else {
+      categoryForm.value.position_footer = 0;
+    }
+
+    if (categoryForm.value.show_home) {
+      categoryForm.value.position_home = categoryForm.value.position_home ?? 0;
+    } else {
+      categoryForm.value.position_home = 0;
+    }
 
     if (isEdit.value) {
       await api.updateCategory(props.id, categoryForm.value);
@@ -148,7 +169,7 @@ onMounted(() => {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? 'Sửa danh mục' : 'Thêm danh mục'">
@@ -159,7 +180,10 @@ onMounted(() => {
           :rules="rules"
           label-placement="top"
         >
-          <n-form-item label="Tên danh mục" path="name">
+          <n-form-item
+            label="Tên danh mục"
+            path="name"
+          >
             <NaiveInput
               v-model:value="categoryForm.name"
               placeholder="Nhập tên danh mục"
@@ -167,7 +191,10 @@ onMounted(() => {
             />
           </n-form-item>
 
-          <n-form-item label="Đường dẫn" path="slug">
+          <n-form-item
+            label="Đường dẫn"
+            path="slug"
+          >
             <NaiveInput
               v-model:value="categoryForm.slug"
               placeholder="Nhập đường dẫn"
@@ -175,7 +202,10 @@ onMounted(() => {
             />
           </n-form-item>
 
-          <n-form-item label="Danh mục cha" path="parent_category">
+          <n-form-item
+            label="Danh mục cha"
+            path="parent_category"
+          >
             <TreeSelectCategories
               v-model:value="categoryForm.parent_category"
               :placeholder="'Chọn danh mục cha'"
@@ -220,12 +250,12 @@ onMounted(() => {
               >
                 Hiển thị trên footer
               </n-checkbox>
-              <!-- <n-checkbox
+              <n-checkbox
                 v-model:checked="categoryForm.show_home"
                 :disabled="loading"
               >
                 Hiển thị trên trang chủ
-              </n-checkbox> -->
+              </n-checkbox>
             </div>
           </n-form-item>
 
@@ -234,7 +264,7 @@ onMounted(() => {
               v-if="categoryForm.show_menu"
               label="Thứ tự hiển thị trên menu"
               path="position"
-              class="w-1/2"
+              class="w-1/3"
             >
               <NaiveInputNumber
                 v-model:value="categoryForm.position_menu"
@@ -246,29 +276,41 @@ onMounted(() => {
               v-if="categoryForm.show_footer"
               label="Thứ tự hiển thị trên footer"
               path="position"
-              class="w-1/2"
+              class="w-1/3"
             >
               <NaiveInputNumber
                 v-model:value="categoryForm.position_footer"
                 placeholder="Nhập thứ tự hiển thị"
               />
             </n-form-item>
+
+            <n-form-item
+              v-if="categoryForm.show_home"
+              label="Thứ tự hiển thị trên trang chủ"
+              path="position"
+              class="w-1/3"
+            >
+              <NaiveInputNumber
+                v-model:value="categoryForm.position_home"
+                placeholder="Nhập thứ tự hiển thị"
+              />
+            </n-form-item>
           </div>
 
           <FormMeta
-            v-model:metaTitle="categoryForm.metadata.meta_title"
-            v-model:metaKeywords="categoryForm.metadata.meta_keywords"
-            v-model:metaDescription="categoryForm.metadata.meta_description"
-            v-model:metaImage="categoryForm.metadata.meta_image"
+            v-model:meta-title="categoryForm.metadata.meta_title"
+            v-model:meta-keywords="categoryForm.metadata.meta_keywords"
+            v-model:meta-description="categoryForm.metadata.meta_description"
+            v-model:meta-image="categoryForm.metadata.meta_image"
           />
         </n-form>
       </n-spin>
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
           :loading="loading"
           :disabled="loading"
         />

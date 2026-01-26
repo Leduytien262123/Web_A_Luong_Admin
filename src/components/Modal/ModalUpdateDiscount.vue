@@ -46,7 +46,14 @@ const handleClickConfirm = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect x="4" y="4" width="48" height="48" rx="24" fill="#FFF6E1" />
+          <rect
+            x="4"
+            y="4"
+            width="48"
+            height="48"
+            rx="24"
+            fill="#FFF6E1"
+          />
           <rect
             x="4"
             y="4"
@@ -63,13 +70,23 @@ const handleClickConfirm = () => {
         </svg>
 
         <IconDeleteModal v-else />
-        <button class="w-32 h-32 bg-white" @click="handleClickCancel">
+        <button
+          class="w-32 h-32 bg-white"
+          @click="handleClickCancel"
+        >
           <IconX class="ml-4" />
         </button>
       </div>
       <div class="mt-16 ml-4">
-        <h1 class="text-20px text-[#344054] font-semibold">{{ title }}</h1>
-        <h2 v-if="text" class="text-14px mt-6 text-#8BA3CB">{{ text }}</h2>
+        <h1 class="text-20px text-[#344054] font-semibold">
+          {{ title }}
+        </h1>
+        <h2
+          v-if="text"
+          class="text-14px mt-6 text-#8BA3CB"
+        >
+          {{ text }}
+        </h2>
       </div>
       <div class="mt-32 grid grid-cols-2 gap-16">
         <n-button
@@ -88,8 +105,8 @@ const handleClickConfirm = () => {
           type="primary"
           :color="isStatusDiscount ? '#FF7A00' : '#FE5C73'"
           class="h-40 text-14 !font-medium"
-          @click="handleClickConfirm"
           :loading
+          @click="handleClickConfirm"
         >
           Xác nhận
         </n-button>

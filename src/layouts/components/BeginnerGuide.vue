@@ -15,24 +15,58 @@
     :config="config"
   >
     <template #prev="{ tipItem, index }">
-      <NButton class="mr-12" type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="prev(tipItem, index)">
+      <NButton
+        class="mr-12"
+        type="primary"
+        color="#fff"
+        text-color="#fff"
+        ghost
+        round
+        size="small"
+        @click="prev(tipItem, index)"
+      >
         Bước trước
       </NButton>
     </template>
     <template #next="{ tipItem }">
-      <NButton class="mr-12" type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="next(tipItem)">
+      <NButton
+        class="mr-12"
+        type="primary"
+        color="#fff"
+        text-color="#fff"
+        ghost
+        round
+        size="small"
+        @click="next(tipItem)"
+      >
         Bước tiếp theo
       </NButton>
     </template>
 
     <template #skip>
-      <NButton type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="skip">
+      <NButton
+        type="primary"
+        color="#fff"
+        text-color="#fff"
+        ghost
+        round
+        size="small"
+        @click="skip"
+      >
         Bỏ qua
       </NButton>
     </template>
 
     <template #done>
-      <NButton type="primary" color="#fff" text-color="#fff" ghost round size="small" @click="done">
+      <NButton
+        type="primary"
+        color="#fff"
+        text-color="#fff"
+        ghost
+        round
+        size="small"
+        @click="done"
+      >
         Hoàn thành
       </NButton>
     </template>

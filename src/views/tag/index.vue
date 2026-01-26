@@ -3,23 +3,31 @@
     <template #action>
       <AddReload
         :reset="resetListTags"
-        :handleAdd="handleAddTag"
-        :titleAdd="'Tạo thẻ Tag'"
+        :handle-add="handleAddTag"
+        :title-add="'Tạo thẻ Tag'"
       />
     </template>
 
     <n-card title="Quản lý thẻ Tag">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item label="Tìm kiếm thẻ Tag" class="w-full">
+          <n-form-item
+            label="Tìm kiếm thẻ Tag"
+            class="w-full"
+          >
             <NaiveInput
+              v-model:value="searchQuery"
               clearable
               placeholder="Nhập tìm kiếm ..."
-              v-model:value="searchQuery"
               @keyup.enter="throttledLoadTags"
             />
           </n-form-item>
-          <n-button type="primary" @click="searchData">Tìm kiếm</n-button>
+          <n-button
+            type="primary"
+            @click="searchData"
+          >
+            Tìm kiếm
+          </n-button>
         </div>
 
         <n-data-table
@@ -35,7 +43,7 @@
           :page="1"
           :limit="10"
           :name="'thẻ tag'"
-          :pageSize="10"
+          :page-size="10"
           @change="loadTags"
         />
       </n-space>

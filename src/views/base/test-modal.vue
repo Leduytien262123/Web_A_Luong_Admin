@@ -1,12 +1,18 @@
 <template>
   <CommonPage show-footer>
-    <n-button type="primary" @click="openModal1">
+    <n-button
+      type="primary"
+      @click="openModal1"
+    >
       Mở cửa sổ bật lên đầu tiên
     </n-button>
     <MeModal ref="$modal1">
       <n-input v-model:value="text" />
     </MeModal>
-    <MeModal ref="$modal2" title="Nội dung đã gửi từ cửa sổ bật lên trước">
+    <MeModal
+      ref="$modal2"
+      title="Nội dung đã gửi từ cửa sổ bật lên trước"
+    >
       <h2>{{ text }}</h2>
     </MeModal>
   </CommonPage>

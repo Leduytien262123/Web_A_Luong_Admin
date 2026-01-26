@@ -9,7 +9,7 @@ class UploadToS3 {
   async getUrlUpload(
     filename,
     contentEncoding = "blob",
-    contentType = "image/jpeg"
+    contentType = "image/jpeg",
   ) {
     const data = {
       key: filename,
@@ -23,13 +23,13 @@ class UploadToS3 {
     filename,
     data,
     { contentEncoding = "blob", contentType = "image/jpeg" } = {},
-    onProgressCallback = null
+    onProgressCallback = null,
   ) {
     try {
       const response = await this.getUrlUpload(
         filename,
         contentEncoding,
-        contentType
+        contentType,
       );
 
       const url = response.data?.data?.upload_url;
@@ -43,7 +43,7 @@ class UploadToS3 {
       switch (contentEncoding) {
         case "base64":
           const binaryString = atob(
-            data.replace(/^data:image\/\w+;base64,/, "")
+            data.replace(/^data:image\/\w+;base64,/, ""),
           );
           const len = binaryString.length;
           const bytes = new Uint8Array(len);
@@ -192,4 +192,16 @@ export default {
     request.post(`/api/admin/manage/roles/${roleId}/users`, data),
   removeRoleUsers: (roleId, data) =>
     request.delete(`/api/admin/manage/roles/${roleId}/users`, { data }),
+
+  getDataPageHome: () => request.get("/api/admin/manage/homepage-sections"),
+  getDataPageHomeById: (id) =>
+    request.get(`/api/admin/manage/homepage-section/${id}`),
+  getDataPageHomeByKey: (type_key) =>
+    request.get(`/api/admin/manage/homepage-section/type/${type_key}`),
+  updateDataPageHome: (id, data) =>
+    request.put(`/api/admin/manage/homepage-section/${id}`, data),
+  createDataPageHome: (data) =>
+    request.post("/api/admin/manage/homepage-section", data),
+  deleteDataPageHome: (id) =>
+    request.delete(`/api/admin/manage/homepage-section/${id}`),
 };

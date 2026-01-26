@@ -1,14 +1,24 @@
 <template>
   <CommonPage back>
     <template #title-suffix>
-      <NTag class="ml-12" type="warning">
+      <NTag
+        class="ml-12"
+        type="warning"
+      >
         {{ route.query.roleName }}
       </NTag>
     </template>
     <template #action>
       <div class="flex items-center">
-        <NButton :disabled="!userIds.length" type="error" @click="handleBatchRemove()">
-          <i v-if="userIds.length" class="i-material-symbols:delete-outline mr-4 text-18" />
+        <NButton
+          :disabled="!userIds.length"
+          type="error"
+          @click="handleBatchRemove()"
+        >
+          <i
+            v-if="userIds.length"
+            class="i-material-symbols:delete-outline mr-4 text-18"
+          />
           Hủy phân quyền hàng loạt
         </NButton>
         <NButton
@@ -17,7 +27,10 @@
           type="primary"
           @click="handleBatchAdd()"
         >
-          <i v-if="userIds.length" class="i-line-md:confirm-circle mr-4 text-18" />
+          <i
+            v-if="userIds.length"
+            class="i-line-md:confirm-circle mr-4 text-18"
+          />
           Phân quyền hàng loạt
         </NButton>
       </div>
@@ -31,7 +44,10 @@
       :get-data="api.getAllUsers"
       @on-checked="onChecked"
     >
-      <MeQueryItem label="Tên người dùng" :label-width="90">
+      <MeQueryItem
+        label="Tên người dùng"
+        :label-width="90"
+      >
         <n-input
           v-model:value="queryItems.username"
           type="text"
@@ -40,11 +56,21 @@
         />
       </MeQueryItem>
 
-      <MeQueryItem label="Giới tính" :label-width="50">
-        <n-select v-model:value="queryItems.gender" clearable :options="genders" />
+      <MeQueryItem
+        label="Giới tính"
+        :label-width="50"
+      >
+        <n-select
+          v-model:value="queryItems.gender"
+          clearable
+          :options="genders"
+        />
       </MeQueryItem>
 
-      <MeQueryItem label="Trạng thái" :label-width="50">
+      <MeQueryItem
+        label="Trạng thái"
+        :label-width="50"
+      >
         <n-select
           v-model:value="queryItems.enable"
           clearable

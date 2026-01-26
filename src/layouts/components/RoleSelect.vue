@@ -1,7 +1,19 @@
 <template>
-  <MeModal ref="modalRef" title="Vui lòng chọn vai trò" width="360px" class="p-12">
-    <n-radio-group v-model:value="roleCode" class="cus-scroll-y max-h-420 w-full py-16">
-      <n-space vertical :size="24" class="mx-12">
+  <MeModal
+    ref="modalRef"
+    title="Vui lòng chọn vai trò"
+    width="360px"
+    class="p-12"
+  >
+    <n-radio-group
+      v-model:value="roleCode"
+      class="cus-scroll-y max-h-420 w-full py-16"
+    >
+      <n-space
+        vertical
+        :size="24"
+        class="mx-12"
+      >
         <n-radio-button
           v-for="role in roles"
           :key="role.id"
@@ -16,7 +28,11 @@
 
     <template #footer>
       <div class="flex">
-        <n-button class="flex-1" size="large" @click="logout()">
+        <n-button
+          class="flex-1"
+          size="large"
+          @click="logout()"
+        >
           Thoát đăng nhập
         </n-button>
         <n-button

@@ -14,5 +14,8 @@ function onUpdateValue(val) {
 </script>
 
 <template>
-  <n-date-picker :value="value" @update:value="onUpdateValue" />
+  <n-date-picker
+    :value="value"
+    @update:value="onUpdateValue"
+  />
 </template>

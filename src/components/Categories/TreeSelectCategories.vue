@@ -62,10 +62,10 @@ onMounted(() => {
 <template>
   <NaiveSelectTree
     :value="value"
-    @update:value="(v) => emit('update:value', v)"
     :placeholder="placeholder"
     :options="options"
     :disabled="disabled || loading"
     clearable
+    @update:value="(v) => emit('update:value', v)"
   />
 </template>

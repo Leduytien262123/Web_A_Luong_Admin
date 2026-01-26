@@ -71,9 +71,9 @@ watch(
 <template>
   <n-input
     :value="value"
+    clearable
     @update:value="handleInput"
     @blur="handleBlur"
-    clearable
     @clear="
       () => {
         emit('clear');

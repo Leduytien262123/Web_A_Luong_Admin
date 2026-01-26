@@ -8,7 +8,11 @@
     :bordered="false"
     @after-leave="onAfterLeave"
   >
-    <n-card :style="modalOptions.contentStyle" :closable="modalOptions.closable" @close="close()">
+    <n-card
+      :style="modalOptions.contentStyle"
+      :closable="modalOptions.closable"
+      @close="close()"
+    >
       <template #header>
         <header class="modal-header">
           {{ modalOptions.title }}
@@ -19,8 +23,14 @@
       <!-- Nút ở dưới cùng -->
       <template #footer>
         <slot name="footer">
-          <footer v-if="modalOptions.showFooter" class="flex justify-end">
-            <n-button v-if="modalOptions.showCancel" @click="handleCancel()">
+          <footer
+            v-if="modalOptions.showFooter"
+            class="flex justify-end"
+          >
+            <n-button
+              v-if="modalOptions.showCancel"
+              @click="handleCancel()"
+            >
               {{ modalOptions.cancelText }}
             </n-button>
             <n-button

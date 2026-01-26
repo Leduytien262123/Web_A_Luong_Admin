@@ -3,35 +3,44 @@
     <template #action>
       <AddReload
         :reset="resetListProducts"
-        :handleAdd="handleAddProduct"
-        :titleAdd="'Thêm sản phẩm'"
+        :handle-add="handleAddProduct"
+        :title-add="'Thêm sản phẩm'"
       />
     </template>
 
     <n-card title="Quản lý sản phẩm">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item label="Tìm kiếm sản phẩm" class="w-[60%]">
+          <n-form-item
+            label="Tìm kiếm sản phẩm"
+            class="w-[60%]"
+          >
             <NaiveInput
+              v-model:value="searchQuery.search"
               class="w-full"
               clearable
               placeholder="Nhập tìm kiếm ..."
-              v-model:value="searchQuery.search"
               @keyup.enter="searchData"
             />
           </n-form-item>
-          <n-form-item label="Tìm kiếm danh mục" class="w-[40%]">
+          <n-form-item
+            label="Tìm kiếm danh mục"
+            class="w-[40%]"
+          >
             <NaiveSelect
-              class="w-full"
               v-model:value="searchQuery.category_id"
-              @update:value="searchByCategoryId"
+              class="w-full"
               :options="categories"
               filterable
               placeholder="Tất cả danh mục"
               clearable
+              @update:value="searchByCategoryId"
             />
           </n-form-item>
-          <ButtonSearch ref="buttonSearchRef" :searchData="loadProducts" />
+          <ButtonSearch
+            ref="buttonSearchRef"
+            :search-data="loadProducts"
+          />
         </div>
 
         <n-data-table
@@ -46,7 +55,7 @@
           :page="1"
           :limit="10"
           :name="'sản phẩm'"
-          :pageSize="10"
+          :page-size="10"
           @change="loadProducts"
         />
       </n-space>

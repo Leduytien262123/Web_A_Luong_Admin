@@ -348,45 +348,62 @@ function handleUpdateFileList(newFileList) {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? `Sửa ${context}` : `Thêm ${context}`">
-      <n-form :model="formValue" :rules="rules" ref="formRef">
-        <n-grid cols="3" x-gap="16" y-gap="16">
+      <n-form
+        ref="formRef"
+        :model="formValue"
+        :rules="rules"
+      >
+        <n-grid
+          cols="3"
+          x-gap="16"
+          y-gap="16"
+        >
           <n-grid-item span="1">
-            <n-form-item :label="`Tên ${context}`" path="full_name">
+            <n-form-item
+              :label="`Tên ${context}`"
+              path="full_name"
+            >
               <NaiveInput
                 v-model:value="formValue.full_name"
-                @blur="handleInput"
                 :placeholder="`Nhập tên ${context}`"
+                @blur="handleInput"
               />
             </n-form-item>
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Số điện thoại" path="phone">
+            <n-form-item
+              label="Số điện thoại"
+              path="phone"
+            >
               <NaiveInput
                 v-model:value="formValue.phone"
-                @input="
-                  formValue.phone = $event.replace(/[^\d]/g, '').slice(0, 10)
-                "
                 :input-props="{
                   inputmode: 'numeric',
                   pattern: '[0-9]*',
                   maxlength: 10,
                 }"
                 placeholder="Nhập số điện thoại"
+                @input="
+                  formValue.phone = $event.replace(/[^\d]/g, '').slice(0, 10)
+                "
               />
             </n-form-item>
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Email" path="email">
+            <n-form-item
+              label="Email"
+              path="email"
+            >
               <NaiveInput
                 v-model:value="formValue.email"
-                @input="formValue.email = $event.replace(/[^\d]/g, '')"
                 placeholder="Nhập email"
+                @input="formValue.email = $event.replace(/[^\d]/g, '')"
               />
             </n-form-item>
           </n-grid-item>
@@ -406,7 +423,10 @@ function handleUpdateFileList(newFileList) {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item label="Chọn ảnh đại diện" path="avatar">
+            <n-form-item
+              label="Chọn ảnh đại diện"
+              path="avatar"
+            >
               <!-- <NaiveUpload
                 :file-list="avatar"
                 @update:file-list="emit('update:avatar', $event)"
@@ -415,11 +435,11 @@ function handleUpdateFileList(newFileList) {
               /> -->
               <NaiveUpload
                 :file-list="fileList"
+                :max="1"
+                list-type="image-card"
                 @update:file-list="handleUpdateFileList"
                 @upload-success="handleUploadSuccess"
                 @remove="handleRemove"
-                :max="1"
-                list-type="image-card"
               />
             </n-form-item>
           </n-grid-item>
@@ -428,9 +448,9 @@ function handleUpdateFileList(newFileList) {
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
           :loading="loading"
           :disabled="loading"
         />

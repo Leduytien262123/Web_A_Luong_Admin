@@ -33,7 +33,10 @@
           hover-bg-gray-100
           @click="handleCopy(icon)"
         >
-          <i :class="icon" text-24 />
+          <i
+            :class="icon"
+            text-24
+          />
         </div>
       </div>
     </div>

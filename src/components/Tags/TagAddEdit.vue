@@ -130,7 +130,7 @@ onMounted(() => {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? 'Sửa thẻ' : 'Thêm thẻ'">
@@ -141,9 +141,16 @@ onMounted(() => {
           :rules="rules"
           label-placement="top"
         >
-          <n-grid cols="3" x-gap="16" y-gap="16">
+          <n-grid
+            cols="3"
+            x-gap="16"
+            y-gap="16"
+          >
             <n-grid-item span="1">
-              <n-form-item label="Tên thẻ tag" path="name">
+              <n-form-item
+                label="Tên thẻ tag"
+                path="name"
+              >
                 <NaiveInput
                   v-model:value="formValue.name"
                   placeholder="Nhập tên thẻ tag"
@@ -153,7 +160,10 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="1">
-              <n-form-item label="Đường dẫn" path="slug">
+              <n-form-item
+                label="Đường dẫn"
+                path="slug"
+              >
                 <NaiveInput
                   v-model:value="formValue.slug"
                   placeholder="Nhập đường dẫn"
@@ -174,20 +184,20 @@ onMounted(() => {
 
             <n-grid-item span="3">
               <FormMeta
-                v-model:metaTitle="formValue.metadata.meta_title"
-                v-model:metaKeywords="formValue.metadata.meta_keywords"
-                v-model:metaDescription="formValue.metadata.meta_description"
-                v-model:metaImage="formValue.metadata.meta_image"
+                v-model:meta-title="formValue.metadata.meta_title"
+                v-model:meta-keywords="formValue.metadata.meta_keywords"
+                v-model:meta-description="formValue.metadata.meta_description"
+                v-model:meta-image="formValue.metadata.meta_image"
               />
             </n-grid-item>
 
             <n-grid-item span="3">
               <ContentBlog
-                :title="'Nội dung thẻ tag'"
-                v-model:coverPhoto="formValue.content.cover_photo"
+                v-model:cover-photo="formValue.content.cover_photo"
                 v-model:images="formValue.content.images"
                 v-model:description="formValue.content.description"
                 v-model:content="formValue.content.content"
+                :title="'Nội dung thẻ tag'"
               />
             </n-grid-item>
           </n-grid>
@@ -196,9 +206,9 @@ onMounted(() => {
 
       <template #action>
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
           :loading="loading"
           :disabled="loading"
         />

@@ -1,7 +1,7 @@
 <script setup>
-import BlogAddEdit from "@/components/Blogs/BlogAddEdit.vue";
+import ArticleAddEdit from "@/components/Articles/ArticleAddEdit.vue";
 </script>
 
 <template>
-  <BlogAddEdit />
+  <ArticleAddEdit />
 </template>

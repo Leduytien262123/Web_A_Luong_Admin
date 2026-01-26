@@ -7,9 +7,16 @@
     :theme-overrides="appStore.naiveThemeOverrides"
   >
     <n-message-provider>
-      <router-view v-if="Layout" v-slot="{ Component, route: curRoute }">
+      <router-view
+        v-if="Layout"
+        v-slot="{ Component, route: curRoute }"
+      >
         <component :is="Layout">
-          <transition name="fade-slide" mode="out-in" appear>
+          <transition
+            name="fade-slide"
+            mode="out-in"
+            appear
+          >
             <KeepAlive :include="keepAliveNames">
               <component
                 :is="Component"

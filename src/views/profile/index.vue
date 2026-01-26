@@ -22,7 +22,11 @@
             </n-button>
           </div>
           <div class="mt-16 flex items-center">
-            <n-button type="primary" ghost @click="avatarModalRef.open()">
+            <n-button
+              type="primary"
+              ghost
+              @click="avatarModalRef.open()"
+            >
               Thay đổi avatar
             </n-button>
             <span class="ml-12 opacity-60">
@@ -34,9 +38,16 @@
       </n-space>
     </n-card>
 
-    <n-card class="mt-20" title="Thông tin cá nhân">
+    <n-card
+      class="mt-20"
+      title="Thông tin cá nhân"
+    >
       <template #header-extra>
-        <n-button type="primary" text @click="profileModalRef.open()">
+        <n-button
+          type="primary"
+          text
+          @click="profileModalRef.open()"
+        >
           <i class="i-fe:edit mr-4" />
           Sửa thông tin
         </n-button>
@@ -87,7 +98,11 @@
         label-placement="left"
         require-mark-placement="left"
       >
-        <n-form-item label="Mật khẩu cũ" path="oldPassword" :rule="required">
+        <n-form-item
+          label="Mật khẩu cũ"
+          path="oldPassword"
+          :rule="required"
+        >
           <n-input
             v-model:value="pwdForm.oldPassword"
             type="password"
@@ -95,7 +110,11 @@
             show-password-on="mousedown"
           />
         </n-form-item>
-        <n-form-item label="Mật khẩu mới" path="newPassword" :rule="required">
+        <n-form-item
+          label="Mật khẩu mới"
+          path="newPassword"
+          :rule="required"
+        >
           <n-input
             v-model:value="pwdForm.newPassword"
             type="password"
@@ -112,27 +131,43 @@
       width="420px"
       @ok="handleProfileSave()"
     >
-      <n-form ref="profileFormRef" :model="profileForm" label-placement="left">
-        <n-form-item label="Biệt danh" path="nickName">
+      <n-form
+        ref="profileFormRef"
+        :model="profileForm"
+        label-placement="left"
+      >
+        <n-form-item
+          label="Biệt danh"
+          path="nickName"
+        >
           <n-input
             v-model:value="profileForm.nickName"
             placeholder="Vui lòng nhập biệt danh"
           />
         </n-form-item>
-        <n-form-item label="Giới tính" path="gender">
+        <n-form-item
+          label="Giới tính"
+          path="gender"
+        >
           <n-select
             v-model:value="profileForm.gender"
             :options="genders"
             placeholder="Vui lòng chọn giới tính"
           />
         </n-form-item>
-        <n-form-item label="Địa chỉ" path="address">
+        <n-form-item
+          label="Địa chỉ"
+          path="address"
+        >
           <n-input
             v-model:value="profileForm.address"
             placeholder="Vui lòng nhập địa chỉ"
           />
         </n-form-item>
-        <n-form-item label="Email" path="email">
+        <n-form-item
+          label="Email"
+          path="email"
+        >
           <n-input
             v-model:value="profileForm.email"
             placeholder="Vui lòng nhập email"

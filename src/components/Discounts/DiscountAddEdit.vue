@@ -429,7 +429,7 @@ const disablePreviousDate = (date) =>
 const disableEndDate = (date) => {
   const now = dayjs();
   const currentDate = dayjs(date);
-  const startDate = discountForm.start_at ? dayjs(discountForm.start_at) : null;
+  const startDate = discountForm.value.start_at ? dayjs(discountForm.value.start_at) : null;
 
   return startDate
     ? currentDate.isBefore(startDate, "days")
@@ -440,14 +440,25 @@ const disableEndDate = (date) => {
 <template>
   <CommonPage>
     <template #action>
-      <ButtonBack :handleBack />
+      <ButtonBack :handle-back />
     </template>
 
     <n-card :title="isEdit ? 'Sửa mã giảm giá' : 'Thêm mã giảm giá'">
-      <n-form :model="discountForm" :rules="rules" ref="formRef">
-        <n-grid cols="3" x-gap="16" y-gap="16">
+      <n-form
+        ref="formRef"
+        :model="discountForm"
+        :rules="rules"
+      >
+        <n-grid
+          cols="3"
+          x-gap="16"
+          y-gap="16"
+        >
           <n-grid-item span="2">
-            <n-form-item label="Tên chương trình giảm giá" path="name">
+            <n-form-item
+              label="Tên chương trình giảm giá"
+              path="name"
+            >
               <NaiveInput
                 v-model:value="discountForm.name"
                 placeholder="Nhập tên chương trình giảm giá"
@@ -456,7 +467,10 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Mã giảm giá" path="discount_code">
+            <n-form-item
+              label="Mã giảm giá"
+              path="discount_code"
+            >
               <NaiveInput
                 v-model:value="discountForm.discount_code"
                 placeholder="Nhập mã giảm giá"
@@ -465,26 +479,29 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="2">
-            <n-form-item label="Thời gian áp dụng" path="date_range">
+            <n-form-item
+              label="Thời gian áp dụng"
+              path="date_range"
+            >
               <div
                 class="flex flex-auto items-center justify-between md:gap-16 gap-8"
               >
                 <n-date-picker
+                  v-model:value="startAtTimestamp"
                   type="datetime"
                   format="dd/MM/yyyy HH:mm:ss"
                   class="w-full lg:max-w-1/2"
                   :is-date-disabled="disablePreviousDate"
-                  v-model:value="startAtTimestamp"
                   placeholder="Thời gian bắt đầu"
                   :disabled="disabledActive || isDisabled"
                 />
 
                 <n-date-picker
+                  v-model:value="endAtTimestamp"
                   type="datetime"
                   format="dd/MM/yyyy HH:mm:ss"
                   class="w-full lg:max-w-1/2"
                   :is-date-disabled="disableEndDate"
-                  v-model:value="endAtTimestamp"
                   placeholder="Thời gian kết thúc"
                   :disabled="isDisabled"
                 />
@@ -493,19 +510,28 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Loại giảm giá" path="type">
+            <n-form-item
+              label="Loại giảm giá"
+              path="type"
+            >
               <NaiveSelect
                 v-model:value="discountForm.type"
                 :options="typeDiscount"
-                @update:value="(val) => (discountForm.value_voucher = null)"
                 placeholder="Chọn loại giảm giá"
                 :disabled="disabledActive || isDisabled"
+                @update:value="(val) => (discountForm.value_voucher = null)"
               />
             </n-form-item>
           </n-grid-item>
 
-          <n-grid-item v-if="discountForm.type === 'percentage'" span="1">
-            <n-form-item label="Giá trị giảm giá" path="value_voucher">
+          <n-grid-item
+            v-if="discountForm.type === 'percentage'"
+            span="1"
+          >
+            <n-form-item
+              label="Giá trị giảm giá"
+              path="value_voucher"
+            >
               <NaiveInputNumber
                 v-model:value="discountForm.value_voucher"
                 :show-button="false"
@@ -517,11 +543,20 @@ const disableEndDate = (date) => {
             </n-form-item>
           </n-grid-item>
 
-          <n-grid-item v-if="discountForm.type === 'percentage'" span="1">
-            <n-form-item label="" path="maximum_discount">
+          <n-grid-item
+            v-if="discountForm.type === 'percentage'"
+            span="1"
+          >
+            <n-form-item
+              label=""
+              path="maximum_discount"
+            >
               <template #label>
                 <span>Giảm giá tối đa (ví dụ: giảm 20% tối đa 50k)</span>
-                <n-tooltip placement="top" trigger="hover">
+                <n-tooltip
+                  placement="top"
+                  trigger="hover"
+                >
                   <template #trigger>
                     <i class="i-fe:info text-16 ml-6 -mb-4 cursor-pointer" />
                   </template>
@@ -546,8 +581,14 @@ const disableEndDate = (date) => {
             </n-form-item>
           </n-grid-item>
 
-          <n-grid-item v-else span="1">
-            <n-form-item label="Giá trị giảm giá" path="value_voucher">
+          <n-grid-item
+            v-else
+            span="1"
+          >
+            <n-form-item
+              label="Giá trị giảm giá"
+              path="value_voucher"
+            >
               <NaiveInputNumber
                 v-model:value="discountForm.value_voucher"
                 :show-button="false"
@@ -560,10 +601,16 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="" path="condition">
+            <n-form-item
+              label=""
+              path="condition"
+            >
               <template #label>
                 <span>Điều kiện áp dụng (nếu có)</span>
-                <n-tooltip placement="top" trigger="hover">
+                <n-tooltip
+                  placement="top"
+                  trigger="hover"
+                >
                   <template #trigger>
                     <i class="i-fe:info text-16 ml-6 -mb-4 cursor-pointer" />
                   </template>
@@ -589,7 +636,10 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Số lượng mã giảm giá" path="quantity">
+            <n-form-item
+              label="Số lượng mã giảm giá"
+              path="quantity"
+            >
               <NaiveInputNumber
                 v-model:value="discountForm.quantity"
                 :show-button="false"
@@ -602,7 +652,10 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item label="Giới hạn sử dụng" path="usage_limit">
+            <n-form-item
+              label="Giới hạn sử dụng"
+              path="usage_limit"
+            >
               <NaiveSelect
                 v-model:value="discountForm.usage_limit"
                 :options="usageLimit"
@@ -618,7 +671,10 @@ const disableEndDate = (date) => {
             </n-form-item>
           </n-grid-item>
 
-          <n-grid-item v-if="discountForm.usage_limit === 1" span="1">
+          <n-grid-item
+            v-if="discountForm.usage_limit === 1"
+            span="1"
+          >
             <n-form-item
               label="Số lần sử dụng (tính theo số điện thoại đặt hàng)"
               path="usage_count"
@@ -638,7 +694,10 @@ const disableEndDate = (date) => {
             <n-form-item>
               <template #label>
                 <span>Danh mục sản phẩm áp dụng</span>
-                <n-tooltip placement="top" trigger="hover">
+                <n-tooltip
+                  placement="top"
+                  trigger="hover"
+                >
                   <template #trigger>
                     <i class="i-fe:info text-16 ml-6 -mb-4 cursor-pointer" />
                   </template>
@@ -667,7 +726,10 @@ const disableEndDate = (date) => {
             <n-form-item>
               <template #label>
                 <span>Sản phẩm áp dụng</span>
-                <n-tooltip placement="top" trigger="hover">
+                <n-tooltip
+                  placement="top"
+                  trigger="hover"
+                >
                   <template #trigger>
                     <i class="i-fe:info text-16 ml-6 -mb-4 cursor-pointer" />
                   </template>
@@ -692,7 +754,10 @@ const disableEndDate = (date) => {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item label="Ghi chú" path="description">
+            <n-form-item
+              label="Ghi chú"
+              path="description"
+            >
               <NaiveInput
                 v-model:value="discountForm.description"
                 type="textarea"
@@ -704,11 +769,14 @@ const disableEndDate = (date) => {
         </n-grid>
       </n-form>
 
-      <template v-if="!isDisabled" #action>
+      <template
+        v-if="!isDisabled"
+        #action
+      >
         <ButtonSave
-          :isEdit="isEdit"
-          :handleBack="handleBack"
-          :handleSave="handleSave"
+          :is-edit="isEdit"
+          :handle-back="handleBack"
+          :handle-save="handleSave"
           :loading="loading"
           :disabled="loading"
         />
