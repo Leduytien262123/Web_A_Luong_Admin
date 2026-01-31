@@ -149,6 +149,17 @@ function handleUpdateFileList(newList) {
       :title="title"
       name="content"
     >
+      <n-form-item label="Ảnh bìa">
+        <NaiveUpload
+          :file-list="coverPhotoList"
+          :max="1"
+          list-type="image-card"
+          @update:file-list="handleUpdateCoverList"
+          @upload-success="handleCoverUploadSuccess"
+          @remove="handleRemoveCover"
+        />
+      </n-form-item>
+
       <n-form-item label="Tải lên tài liệu">
         <NaiveUpload2
           :file-list="fileList"
@@ -160,16 +171,10 @@ function handleUpdateFileList(newList) {
       </n-form-item>
 
       <n-form-item label="Mô tả ngắn">
-        <RichEditorTiny
-          v-model="descriptionComputed"
-          :height="300"
-        />
+        <RichEditorTiny v-model="descriptionComputed" :height="300" />
       </n-form-item>
       <n-form-item label="Bài viết">
-        <RichEditor
-          v-model="contentComputed"
-          :height="500"
-        />
+        <RichEditor v-model="contentComputed" :height="500" />
       </n-form-item>
     </n-collapse-item>
   </n-collapse>

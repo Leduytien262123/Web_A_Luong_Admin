@@ -37,7 +37,7 @@ const formValue = ref({
   },
   content: {
     cover_photo: [],
-    images: [],
+    list_file: [],
     description: "",
     content: "",
   },
@@ -107,7 +107,7 @@ async function loadArticles() {
         },
         content: {
           cover_photo: data.content?.cover_photo || [],
-          images: data.content?.images || [],
+          list_file: data.content?.list_file || [],
           description: data.content?.description || "",
           content: data.content?.content || "",
         },
@@ -131,10 +131,13 @@ async function handleSave() {
 
     loading.value = true;
 
-    const dataToSend = { ...formValue.value };
+    const dataToSend = JSON.parse(JSON.stringify(formValue.value || {}));
     if (dataToSend.published_at) {
       dataToSend.published_at = new Date(dataToSend.published_at).toISOString();
     }
+
+    dataToSend.content = dataToSend.content || {};
+    dataToSend.content.list_file = formValue.value.content.list_file || [];
 
     if (isEdit.value) {
       await api.updateArticle(props.id, dataToSend);
@@ -188,16 +191,9 @@ onMounted(() => {
           :rules="rules"
           label-placement="top"
         >
-          <n-grid
-            cols="4"
-            x-gap="16"
-            y-gap="16"
-          >
+          <n-grid cols="4" x-gap="16" y-gap="16">
             <n-grid-item span="2">
-              <n-form-item
-                label="Tên bài viết"
-                path="title"
-              >
+              <n-form-item label="Tên bài viết" path="title">
                 <NaiveInput
                   v-model:value="formValue.title"
                   placeholder="Nhập tên bài viết"
@@ -206,10 +202,7 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item
-                label="Đường dẫn"
-                path="slug"
-              >
+              <n-form-item label="Đường dẫn" path="slug">
                 <NaiveInput
                   v-model:value="formValue.slug"
                   placeholder="Nhập đường dẫn"
@@ -219,10 +212,7 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item
-                label="Danh mục bài viết"
-                path="category_id"
-              >
+              <n-form-item label="Danh mục bài viết" path="category_id">
                 <TreeSelectCategories
                   v-model:value="formValue.category_id"
                   :placeholder="'Chọn danh mục cha'"
@@ -231,10 +221,7 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item
-                label="Thẻ tag"
-                path="tag_ids"
-              >
+              <n-form-item label="Thẻ tag" path="tag_ids">
                 <NaiveSelect
                   v-model:value="formValue.tag_ids"
                   :options="tags"
@@ -246,10 +233,7 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item
-                label="Trạng thái"
-                path="status"
-              >
+              <n-form-item label="Trạng thái" path="status">
                 <NaiveSelect
                   v-model:value="formValue.status"
                   :options="optionsStatus"
@@ -258,10 +242,7 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item
-                label="Ngày đăng"
-                path="published_at"
-              >
+              <n-form-item label="Ngày đăng" path="published_at">
                 <NaiveDatePicker
                   :value="
                     isValidDate(formValue.published_at)
@@ -293,17 +274,10 @@ onMounted(() => {
             </n-grid-item>
 
             <n-grid-item span="2">
-              <n-form-item
-                label="Nổi bật"
-                path="is_hot"
-              >
+              <n-form-item label="Nổi bật" path="is_hot">
                 <n-switch v-model:value="formValue.is_hot">
-                  <template #checked>
-                    Nổi bật
-                  </template>
-                  <template #unchecked>
-                    Bình thường
-                  </template>
+                  <template #checked> Nổi bật </template>
+                  <template #unchecked> Bình thường </template>
                 </n-switch>
               </n-form-item>
             </n-grid-item>
@@ -320,7 +294,7 @@ onMounted(() => {
             <n-grid-item span="4">
               <ContentBlog
                 v-model:cover-photo="formValue.content.cover_photo"
-                v-model:images="formValue.content.images"
+                v-model:files="formValue.content.list_file"
                 v-model:description="formValue.content.description"
                 v-model:content="formValue.content.content"
                 :title="'Nội dung bài viết'"

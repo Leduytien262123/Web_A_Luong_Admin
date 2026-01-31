@@ -62,7 +62,7 @@ const normalizeList = (list) =>
     };
   });
 
-const fileList = ref([]);
+const fileList = ref(normalizeList(props.fileList || []));
 
 watch(
   () => props.fileList,
@@ -176,10 +176,7 @@ function handleRemove({ file, fileList: newList }) {
   >
     <n-upload-dragger>
       <div style="margin-bottom: 12px">
-        <n-icon
-          size="48"
-          :depth="3"
-        >
+        <n-icon size="48" :depth="3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -227,10 +224,7 @@ function handleRemove({ file, fileList: newList }) {
       <n-text style="font-size: 16px">
         Nhấp chuột hoặc kéo tệp vào khu vực này để tải lên.
       </n-text>
-      <n-p
-        depth="3"
-        style="margin: 8px 0 0 0"
-      >
+      <n-p depth="3" style="margin: 8px 0 0 0">
         Hỗ trợ tải lên ảnh, tài liệu word, pdf, excel, zip,...
       </n-p>
     </n-upload-dragger>
