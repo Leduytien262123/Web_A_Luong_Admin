@@ -1,1 +1,0 @@
-import{f as o,o as a,r as s,n as t}from"./index-DYcU_f0W.js";const l={__name:"AppCard",props:{bordered:Boolean},setup(e){return(r,n)=>(a(),o("div",{class:t(["auto-bg",{"card-border":e.bordered}])},[s(r.$slots,"default")],2))}};export{l as _};

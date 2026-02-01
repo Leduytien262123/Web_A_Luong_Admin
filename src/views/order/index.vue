@@ -2,17 +2,11 @@
   <CommonPage>
     <template #action>
       <div class="flex justìy-end gap-12">
-        <NButton
-          type="info"
-          @click="resetListOrders"
-        >
+        <NButton type="info" @click="resetListOrders">
           <i class="i-material-symbols:refresh mr-4 text-18" />
           Tải lại danh sách
         </NButton>
-        <NButton
-          type="primary"
-          @click="handleAddOrder"
-        >
+        <NButton type="primary" @click="handleAddOrder">
           <i class="i-material-symbols:add mr-4 text-18" />
           Thêm đơn hàng
         </NButton>
@@ -22,11 +16,7 @@
     <n-card title="Quản lý đơn hàng">
       <n-space vertical>
         <div class="flex mb-8">
-          <n-grid
-            cols="3"
-            x-gap="12"
-            y-gap="12"
-          >
+          <n-grid cols="3" x-gap="12" y-gap="12">
             <n-grid-item span="1">
               <n-form-item label="Mã đơn hàng">
                 <NaiveInput
@@ -39,11 +29,11 @@
             </n-grid-item>
 
             <n-grid-item span="1">
-              <n-form-item label="Khách hàng">
+              <n-form-item label="Người dùng">
                 <NaiveInput
                   v-model:value="searchQuery.customer"
                   clearable
-                  placeholder="Tên khách hàng or Số điện thoại ..."
+                  placeholder="Tên người dùng or Số điện thoại ..."
                   @keyup.enter="searchData"
                 />
               </n-form-item>
@@ -115,16 +105,10 @@
 
             <n-grid-item span="3">
               <div class="flex gap-12 justify-end">
-                <n-button
-                  type="success"
-                  @click="exportExcel"
-                >
+                <n-button type="success" @click="exportExcel">
                   Xuất file
                 </n-button>
-                <ButtonSearch
-                  ref="buttonSearchRef"
-                  :search-data="loadOrders"
-                />
+                <ButtonSearch ref="buttonSearchRef" :search-data="loadOrders" />
               </div>
             </n-grid-item>
           </n-grid>
@@ -178,7 +162,7 @@ const orders = ref([]);
 const loading = ref(false);
 const searchQuery = ref({
   order_code: null, // Mã đơn hàng
-  customer: null, // Khách hàng
+  customer: null, // người dùng
   type_order: null, // Loại đơn hàng
   status: null, // Trạng thái xử lý
   payment_status: null, // Trạng thái thanh toán
@@ -235,7 +219,7 @@ const columns = [
     width: 220,
   },
   {
-    title: "Khách hàng",
+    title: "Người dùng",
     key: "name",
     ellipsis: true,
     render(row) {
@@ -256,7 +240,7 @@ const columns = [
         {
           default: () =>
             row?.type_order === "web" ? "Đơn web" : "Đơn khách lẻ",
-        }
+        },
       );
     },
   },
@@ -283,7 +267,7 @@ const columns = [
     ellipsis: true,
     render(row) {
       const opt = optionsPayment.value.find(
-        (o) => o.value === row.payment_method
+        (o) => o.value === row.payment_method,
       );
       const label = opt ? opt.label : row.payment_method || "";
       const type =
@@ -328,7 +312,7 @@ const columns = [
             content: h(IconBin),
             tooltipContent: "Xóa",
           }),
-        ].filter(Boolean)
+        ].filter(Boolean),
       );
     },
   },

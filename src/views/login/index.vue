@@ -10,15 +10,12 @@
           src="@/assets/images/login_banner.webp"
           class="w-full"
           alt="login_banner"
-        >
+        />
       </div>
 
       <div class="w-320 flex-col px-20 py-32">
         <h2 class="f-c-c text-24 text-#6a6a6a font-normal">
-          <img
-            src="@/assets/images/logo.png"
-            class="mr-12 h-50"
-          >
+          <img src="@/assets/images/logo.png" class="mr-12 h-50" />
           {{ title }}
         </h2>
         <n-input
@@ -46,28 +43,6 @@
           </template>
         </n-input>
 
-        <div class="mt-20 flex items-center">
-          <n-input
-            v-model:value="loginInfo.captcha"
-            class="h-40 items-center"
-            placeholder="Vui lòng nhập mã xác thực"
-            :maxlength="4"
-            @keydown.enter="handleLogin()"
-          >
-            <template #prefix>
-              <i class="i-fe:key mr-12 opacity-20" />
-            </template>
-          </n-input>
-          <img
-            v-if="captchaUrl"
-            :src="captchaUrl"
-            alt="Mã xác thực"
-            height="40"
-            class="ml-12 w-80 cursor-pointer"
-            @click="initCaptcha"
-          >
-        </div>
-
         <n-checkbox
           class="mt-20"
           :checked="isRemember"
@@ -76,17 +51,17 @@
         />
 
         <div class="mt-20 flex items-center">
-          <n-button
+          <!-- <n-button
             class="h-40 flex-1 rounded-5 text-16"
             type="primary"
             ghost
             @click="quickLogin()"
           >
             Trải nghiệm nhanh
-          </n-button>
+          </n-button> -->
 
           <n-button
-            class="ml-32 h-40 flex-1 rounded-5 text-16"
+            class="h-40 flex-1 rounded-5 text-16"
             type="primary"
             :loading="loading"
             @click="handleLogin()"
@@ -142,11 +117,11 @@ function quickLogin() {
 const isRemember = useStorage("isRemember", true);
 const loading = ref(false);
 async function handleLogin(isQuick) {
-  const { username, password, captcha } = loginInfo.value;
+  const { username, password } = loginInfo.value;
   if (!username || !password)
     return $message.warning("Vui lòng nhập tên người dùng và mật khẩu");
-  if (!isQuick && !captcha)
-    return $message.warning("Vui lòng nhập mã xác thực");
+  // if (!isQuick && !captcha)
+  //   return $message.warning("Vui lòng nhập mã xác thực");
 
   try {
     loading.value = true;
@@ -172,7 +147,7 @@ async function handleLogin(isQuick) {
       onLoginSuccess(loginData);
     } else {
       throw new Error(
-        "Không thể xử lý response từ server. Vui lòng kiểm tra console để biết chi tiết."
+        "Không thể xử lý response từ server. Vui lòng kiểm tra console để biết chi tiết.",
       );
     }
   } catch (error) {

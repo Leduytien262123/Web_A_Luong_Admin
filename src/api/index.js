@@ -173,14 +173,14 @@ export default {
   updateTag: (id, data) => request.put(`/api/admin/manage/tag/${id}`, data),
   deleteTag: (id) => request.delete(`/api/admin/manage/tag/${id}`),
 
-  // User Management APIs (Admin)
-  getUsers: (params = {}) => request.get("/api/admin/manage/users", { params }),
-  createUser: (data) => request.post("/api/admin/manage/user", data),
-  getUserById: (id, data) => request.get(`/api/admin/manage/user/${id}`, data),
-  updateUser: (id, data) => request.put(`/api/admin/manage/user/${id}`, data),
-  deleteUser: (id) => request.delete(`/api/admin/manage/user/${id}`),
+  // User Superment APIs (Admin)
+  getUsers: (params = {}) => request.get("/api/admin/super/users", { params }),
+  createUser: (data) => request.post("/api/admin/super/user", data),
+  getUserById: (id, data) => request.get(`/api/admin/super/user/${id}`, data),
+  updateUser: (id, data) => request.put(`/api/admin/super/user/${id}`, data),
+  deleteUser: (id) => request.delete(`/api/admin/super/user/${id}`),
   resetUserPassword: (id, data) =>
-    request.post(`/api/admin/manage/user/${id}/reset-password`, data),
+    request.post(`/api/admin/super/user/${id}/reset-password`, data),
 
   // Role Management APIs (Admin/manage)
   getAllRoles: (params = {}) =>

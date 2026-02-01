@@ -11,16 +11,19 @@
     <n-card :title="`Danh sách ${context}`">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item
-            :label="`Tìm kiếm ${context}`"
-            class="w-full"
-          >
+          <n-form-item :label="`Tìm kiếm ${context}`" class="w-full">
             <NaiveInput
               v-model:value="searchQuery.name"
               class="w-full"
               clearable
               placeholder="Nhập tìm kiếm theo tên, số điện thoại, email ..."
               @keyup.enter="throttledLoadUsers"
+              @clear="
+                () => {
+                  searchQuery.name = '';
+                  throttledLoadUsers();
+                }
+              "
             />
           </n-form-item>
           <ButtonSearch :search-data />
@@ -69,7 +72,7 @@ const dataDetail = ref(null);
 const showDetailModal = ref(false);
 const context = computed(() => {
   if (route.path.includes("staff")) return "nhân sự";
-  if (route.path.includes("user")) return "khách hàng";
+  if (route.path.includes("user")) return "người dùng";
 });
 const titleDetail = ref(`Chi tiết ${context.value}`);
 const detailModalRef = ref(null);
@@ -114,7 +117,7 @@ const columns = [
       return h(
         NTag,
         { type: row.is_active ? "success" : "", size: "small" },
-        { default: () => (row.is_active ? "Hoạt động" : "Dừng hoạt động") }
+        { default: () => (row.is_active ? "Hoạt động" : "Dừng hoạt động") },
       );
     },
   },
@@ -146,7 +149,7 @@ const columns = [
             content: h(IconBin),
             tooltipContent: "Xóa",
           }),
-        ].filter(Boolean)
+        ].filter(Boolean),
       );
     },
   },
@@ -180,7 +183,7 @@ async function loadUsers() {
     const params = {
       page: 1,
       length: 10,
-      role: role.value,
+      // role: role.value,
     };
     if (searchQuery.value?.name) {
       params.name = searchQuery.value?.name;

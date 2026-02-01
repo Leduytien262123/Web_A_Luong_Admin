@@ -11,23 +11,21 @@
     <n-card title="Quản lý thẻ Tag">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item
-            label="Tìm kiếm thẻ Tag"
-            class="w-full"
-          >
+          <n-form-item label="Tìm kiếm thẻ Tag" class="w-full">
             <NaiveInput
               v-model:value="searchQuery"
               clearable
               placeholder="Nhập tìm kiếm ..."
               @keyup.enter="throttledLoadTags"
+              @clear="
+                () => {
+                  searchQuery = '';
+                  searchData();
+                }
+              "
             />
           </n-form-item>
-          <n-button
-            type="primary"
-            @click="searchData"
-          >
-            Tìm kiếm
-          </n-button>
+          <n-button type="primary" @click="searchData"> Tìm kiếm </n-button>
         </div>
 
         <n-data-table
@@ -94,7 +92,7 @@ const columns = [
       return h(
         NTag,
         { type: row.is_active ? "success" : "", size: "small" },
-        { default: () => (row.is_active ? "Hoạt động" : "Dừng hoạt động") }
+        { default: () => (row.is_active ? "Hoạt động" : "Dừng hoạt động") },
       );
     },
   },
@@ -126,7 +124,7 @@ const columns = [
             content: h(IconBin),
             tooltipContent: "Xóa",
           }),
-        ].filter(Boolean)
+        ].filter(Boolean),
       );
     },
   },
@@ -167,18 +165,18 @@ async function loadTags() {
 // Tạo hàm throttle cho loadTags
 const throttledLoadTags = throttle(loadTags, 500);
 
-// Xem chi tiết thẻ Tag
-async function viewTag(id) {
-  showDetailModal.value = true;
-  await nextTick();
-  detailModalRef.value?.focus && detailModalRef.value.focus();
-  try {
-    const response = await api.getTagById(id);
-    dataDetail.value = response.data?.data || null;
-  } catch (error) {
-    $message.error("Không thể tải chi tiết thẻ Tag");
-  }
-}
+// // Xem chi tiết thẻ Tag
+// async function viewTag(id) {
+//   showDetailModal.value = true;
+//   await nextTick();
+//   detailModalRef.value?.focus && detailModalRef.value.focus();
+//   try {
+//     const response = await api.getTagById(id);
+//     dataDetail.value = response.data?.data || null;
+//   } catch (error) {
+//     $message.error("Không thể tải chi tiết thẻ Tag");
+//   }
+// }
 
 // Sửa thẻ Tag
 function editTag(id) {

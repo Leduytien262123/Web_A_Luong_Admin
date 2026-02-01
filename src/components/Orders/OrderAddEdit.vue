@@ -71,11 +71,11 @@ const rules = {
       trigger: ["blur", "input"],
       validator(rule, value) {
         const name = String(value || "").trim();
-        if (!name) return new Error("Vui lòng nhập tên khách hàng");
+        if (!name) return new Error("Vui lòng nhập tên người dùng");
         if (name.length < 2)
-          return new Error("Tên khách hàng phải có ít nhất 2 ký tự");
+          return new Error("Tên người dùng phải có ít nhất 2 ký tự");
         if (name.length > 100)
-          return new Error("Tên khách hàng không được quá 100 ký tự");
+          return new Error("Tên người dùng không được quá 100 ký tự");
         return true;
       },
       trigger: ["blur", "input"],
@@ -133,7 +133,7 @@ const rules = {
         // Kiểm tra định dạng cơ bản (10 số, bắt đầu bằng 0)
         if (!/^0\d{9}$/.test(phone)) {
           return new Error(
-            "Số điện thoại định dạng không chính xác (phải gồm 10 số và bắt đầu bằng 0)"
+            "Số điện thoại định dạng không chính xác (phải gồm 10 số và bắt đầu bằng 0)",
           );
         }
 
@@ -141,7 +141,7 @@ const rules = {
         const prefix = phone.substring(0, 3);
         if (!validPrefixes.includes(prefix)) {
           return new Error(
-            "Số điện thoại định dạng không chính xác (đầu số không hợp lệ)"
+            "Số điện thoại định dạng không chính xác (đầu số không hợp lệ)",
           );
         }
 
@@ -223,7 +223,7 @@ watch(
     if (newName) {
       productForm.value.slug = generateSlug(newName);
     }
-  }
+  },
 );
 
 const formRef = ref(null);
@@ -344,7 +344,7 @@ watch(
       };
     });
   },
-  { deep: true }
+  { deep: true },
 );
 
 function handleBack() {
@@ -421,21 +421,10 @@ async function handleSave() {
     </template>
 
     <n-card :title="isEdit ? 'Sửa đơn hàng' : 'Thêm đơn hàng'">
-      <n-form
-        ref="formRef"
-        :model="productForm"
-        :rules="rules"
-      >
-        <n-grid
-          cols="3"
-          x-gap="16"
-          y-gap="16"
-        >
+      <n-form ref="formRef" :model="productForm" :rules="rules">
+        <n-grid cols="3" x-gap="16" y-gap="16">
           <n-grid-item span="1">
-            <n-form-item
-              label="Trạng thái"
-              path="status"
-            >
+            <n-form-item label="Trạng thái" path="status">
               <NaiveInput
                 :value="statusLabel"
                 readonly
@@ -445,10 +434,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Thanh toán"
-              path="payment_method"
-            >
+            <n-form-item label="Thanh toán" path="payment_method">
               <NaiveSelect
                 v-model:value="productForm.payment_method"
                 :options="paymentsMethod"
@@ -468,10 +454,7 @@ async function handleSave() {
             </n-form-item> -->
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Người tạo"
-              path="creator_name"
-            >
+            <n-form-item label="Người tạo" path="creator_name">
               <NaiveInput
                 v-model:value="productForm.creator_name"
                 placeholder="Nhập tên người tạo"
@@ -481,22 +464,16 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Tên khách hàng"
-              path="name"
-            >
+            <n-form-item label="Tên người dùng" path="name">
               <NaiveInput
                 v-model:value="productForm.name"
-                placeholder="Nhập tên khách hàng"
+                placeholder="Nhập tên người dùng"
               />
             </n-form-item>
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Số điện thoại"
-              path="phone"
-            >
+            <n-form-item label="Số điện thoại" path="phone">
               <NaiveInput
                 v-model:value="productForm.phone"
                 :input-props="{
@@ -513,10 +490,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Email"
-              path="email"
-            >
+            <n-form-item label="Email" path="email">
               <NaiveInput
                 v-model:value="productForm.email"
                 placeholder="Nhập email"
@@ -530,10 +504,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item
-              label="Địa chỉ"
-              path="address"
-            >
+            <n-form-item label="Địa chỉ" path="address">
               <UpdateAddress
                 ref="updateAddressRef"
                 :is-disabled="productForm.status !== 'pending' && isEdit"
@@ -545,10 +516,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="3">
-            <n-form-item
-              label="Ghi chú"
-              path="note"
-            >
+            <n-form-item label="Ghi chú" path="note">
               <NaiveInput
                 v-model:value="productForm.note"
                 placeholder="Ghi chú"
@@ -557,10 +525,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Mã giảm giá"
-              path="discount_code"
-            >
+            <n-form-item label="Mã giảm giá" path="discount_code">
               <NaiveSelect
                 v-model:value="productForm.discount_code"
                 :options="discounts"
@@ -572,10 +537,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Phí ship"
-              path="shipping_fee"
-            >
+            <n-form-item label="Phí ship" path="shipping_fee">
               <NaiveInputNumber
                 v-model:value="productForm.shipping_fee"
                 :money="true"
@@ -587,10 +549,7 @@ async function handleSave() {
           </n-grid-item>
 
           <n-grid-item span="2">
-            <n-form-item
-              label="Chọn sản phẩm"
-              path="product_ids"
-            >
+            <n-form-item label="Chọn sản phẩm" path="product_ids">
               <NaiveSelect
                 v-model:value="selectedProductIds"
                 :options="products"
@@ -602,30 +561,17 @@ async function handleSave() {
           </n-grid-item>
         </n-grid>
 
-        <n-grid
-          cols="5"
-          x-gap="16"
-          y-gap="16"
-        >
-          <template
-            v-for="(p, idx) in productForm.product_ids"
-            :key="p.id"
-          >
+        <n-grid cols="5" x-gap="16" y-gap="16">
+          <template v-for="(p, idx) in productForm.product_ids" :key="p.id">
             <n-grid-item :span="2">
               <n-form-item label="Sản phẩm">
-                <NaiveInput
-                  v-model:value="p.name"
-                  readonly
-                />
+                <NaiveInput v-model:value="p.name" readonly />
               </n-form-item>
             </n-grid-item>
 
             <n-grid-item :span="1">
               <n-form-item label="Số lượng">
-                <NaiveInputNumber
-                  v-model:value="p.quantity"
-                  :min="1"
-                />
+                <NaiveInputNumber v-model:value="p.quantity" :min="1" />
               </n-form-item>
             </n-grid-item>
 
@@ -638,10 +584,7 @@ async function handleSave() {
                   class="mr-16"
                   readonly
                 />
-                <n-button
-                  type="error"
-                  @click.prevent="removeProduct(idx)"
-                >
+                <n-button type="error" @click.prevent="removeProduct(idx)">
                   Xoá
                 </n-button>
               </n-form-item>

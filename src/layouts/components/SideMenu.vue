@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { useAppStore, usePermissionStore } from "@/store";
+import { useAppStore, usePermissionStore, useUserStore } from "@/store";
 import { isExternal } from "@/utils";
 import { h } from "vue";
 
@@ -72,45 +72,54 @@ const activeKey = computed(() => {
 });
 
 // Raw menu definition (keeps labels/keys/paths)
-const rawMenu = [
-  {
-    label: "Dashboard",
-    key: "dashboard",
-    path: "/",
-  },
-  {
-    label: "Quản lý bài viết",
-    key: "post-management",
-    children: [
-      {
-        label: "Danh mục",
-        key: "category",
-        path: "/category",
-      },
-      {
-        label: "Bài viết",
-        key: "articles",
-        path: "/articles",
-      },
-      {
-        label: "Tag",
-        key: "tag",
-        path: "/tag",
-      },
-    ],
-  },
-  // {
-  //   label: "Quản lý người dùng",
-  //   key: "user-management",
-  //   children: [
-  //     {
-  //       label: "Quản lý người dùng",
-  //       key: "user",
-  //       path: "/user",
-  //     },
-  //   ],
-  // },
-  {
+const userStore = useUserStore();
+
+const rawMenu = computed(() => {
+  const items = [
+    {
+      label: "Dashboard",
+      key: "dashboard",
+      path: "/",
+    },
+    {
+      label: "Quản lý bài viết",
+      key: "post-management",
+      children: [
+        {
+          label: "Danh mục",
+          key: "category",
+          path: "/category",
+        },
+        {
+          label: "Bài viết",
+          key: "articles",
+          path: "/articles",
+        },
+        {
+          label: "Tag",
+          key: "tag",
+          path: "/tag",
+        },
+      ],
+    },
+  ];
+
+  // Only include user management menu for super_admin role
+  if (userStore.role === "super_admin") {
+    items.push({
+      label: "Quản lý người dùng",
+      key: "user-management",
+      children: [
+        {
+          label: "Quản lý người dùng",
+          key: "user",
+          path: "/user",
+        },
+      ],
+    });
+  }
+
+  items.push({
     label: "Quản lý hệ thống",
     key: "system-management",
     children: [
@@ -125,8 +134,10 @@ const rawMenu = [
         path: "/configs/home-configuration",
       },
     ],
-  },
-];
+  });
+
+  return items;
+});
 
 // Mapping từ key/label sang Uno icon class (bằng Iconify / UnoCSS syntax)
 function getUnoIconClass(nameOrKey) {
@@ -168,7 +179,7 @@ function buildOptions(items) {
 }
 
 // Cấu trúc menu đúng format cho Naive UI (với Uno icons)
-const menuOptions = computed(() => buildOptions(rawMenu));
+const menuOptions = computed(() => buildOptions(rawMenu.value));
 
 // Tìm menu item theo key
 function findMenuItem(options, key) {

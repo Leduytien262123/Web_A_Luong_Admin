@@ -153,9 +153,7 @@
         <VChart :option="trendOption" autoresize />
       </div>
     </n-card> -->
-    <h1 class="">
-      Tính năng đang phát triển...
-    </h1>
+    <h1 class="">Tính năng đang phát triển...</h1>
   </AppPage>
 </template>
 
@@ -272,9 +270,9 @@ const getDashboardOverview = async () => {
   }
 };
 
-onMounted(async () => {
-  await getDashboardOverview();
-});
+// onMounted(async () => {
+//   await getDashboardOverview();
+// });
 
 const skillOption = computed(() => ({
   tooltip: {

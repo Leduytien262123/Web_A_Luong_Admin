@@ -11,10 +11,7 @@
     <n-card title="Quản lý danh mục">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item
-            label="Tìm kiếm danh mục"
-            class="w-full"
-          >
+          <n-form-item label="Tìm kiếm danh mục" class="w-full">
             <NaiveInput
               v-model:value="searchQuery"
               clearable
@@ -28,10 +25,7 @@
               "
             />
           </n-form-item>
-          <ButtonSearch
-            ref="buttonSearchRef"
-            :search-data="loadCategories"
-          />
+          <ButtonSearch ref="buttonSearchRef" :search-data="loadCategories" />
         </div>
 
         <n-data-table
@@ -215,17 +209,17 @@ async function loadCategories() {
 }
 
 // Xem chi tiết danh mục
-async function viewCategory(id) {
-  showDetailModal.value = true;
-  await nextTick();
-  detailModalRef.value?.focus && detailModalRef.value.focus();
-  try {
-    const response = await api.getCategoryById(id);
-    dataDetail.value = response.data?.data || null;
-  } catch (error) {
-    $message.error("Không thể tải chi tiết danh mục");
-  }
-}
+// async function viewCategory(id) {
+//   showDetailModal.value = true;
+//   await nextTick();
+//   detailModalRef.value?.focus && detailModalRef.value.focus();
+//   try {
+//     const response = await api.getCategoryById(id);
+//     dataDetail.value = response.data?.data || null;
+//   } catch (error) {
+//     $message.error("Không thể tải chi tiết danh mục");
+//   }
+// }
 
 // Sửa danh mục
 function editCategory(id) {

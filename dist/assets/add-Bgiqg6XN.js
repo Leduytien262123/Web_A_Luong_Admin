@@ -1,1 +1,0 @@
-import{_ as o}from"./OrderAddEdit-BVz5TW4H.js";import{d as r,o as t}from"./index-DYcU_f0W.js";import"./CommonPage-r69Mp4tc.js";import"./TheFooter-BtZThfEk.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./AppCard-kEEXouea.js";const f={__name:"add",setup(a){return(m,p)=>(t(),r(o))}};export{f as default};

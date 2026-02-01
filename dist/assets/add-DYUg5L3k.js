@@ -1,1 +1,0 @@
-import{C as o}from"./CategoryAddEdit-9oaUhozp.js";import{d as r,o as t}from"./index-DYcU_f0W.js";import"./CommonPage-r69Mp4tc.js";import"./TheFooter-BtZThfEk.js";import"./_plugin-vue_export-helper-DlAUqK2U.js";import"./AppCard-kEEXouea.js";const n={__name:"add",setup(a){return(e,p)=>(t(),r(o))}};export{n as default};

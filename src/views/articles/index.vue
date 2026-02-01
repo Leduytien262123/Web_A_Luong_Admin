@@ -11,45 +11,49 @@
     <n-card title="Quản lý bài viết">
       <n-space vertical>
         <div class="flex gap-12 mb-8 items-end">
-          <n-form-item
-            label="Tìm kiếm bài viết"
-            class="w-full"
-          >
+          <n-form-item label="Tìm kiếm bài viết" class="w-full">
             <NaiveInput
               v-model:value="searchQuery.search"
               clearable
               placeholder="Nhập tìm kiếm ..."
               @keyup.enter="throttledLoadArticles"
+              @clear="
+                () => {
+                  searchQuery.search = '';
+                  searchData();
+                }
+              "
             />
           </n-form-item>
-          <n-form-item
-            label="Danh mục bài viết"
-            class="w-full"
-          >
+          <n-form-item label="Danh mục bài viết" class="w-full">
             <TreeSelectCategories
               v-model:value="searchQuery.category"
               clearable
               placeholder="Chọn danh mục bài viết"
+              @clear="
+                () => {
+                  searchQuery.category = null;
+                  searchData();
+                }
+              "
             />
           </n-form-item>
-          <n-form-item
-            label="Tag"
-            class="w-full"
-          >
+          <n-form-item label="Tag" class="w-full">
             <NaiveSelect
               v-model:value="searchQuery.tag"
               clearable
               placeholder="Chọn tag"
               :options="tagOptions"
               @keyup.enter="throttledLoadArticles"
+              @clear="
+                () => {
+                  searchQuery.tag = null;
+                  searchData();
+                }
+              "
             />
           </n-form-item>
-          <n-button
-            type="primary"
-            @click="searchData"
-          >
-            Tìm kiếm
-          </n-button>
+          <n-button type="primary" @click="searchData"> Tìm kiếm </n-button>
         </div>
 
         <n-data-table
@@ -129,7 +133,7 @@ const columns = [
       return h(
         NTag,
         { type: row.status === "post" ? "success" : "", size: "small" },
-        { default: () => (row.status === "post" ? "Bài đăng" : "Bài nháp") }
+        { default: () => (row.status === "post" ? "Bài đăng" : "Bài nháp") },
       );
     },
   },
@@ -161,7 +165,7 @@ const columns = [
             content: h(IconBin),
             tooltipContent: "Xóa",
           }),
-        ].filter(Boolean)
+        ].filter(Boolean),
       );
     },
   },
@@ -228,18 +232,18 @@ async function loadArticles() {
 // Tạo hàm throttle cho loadArticles
 const throttledLoadArticles = throttle(loadArticles, 500);
 
-// Xem chi tiết bài viết
-async function viewArticle(id) {
-  showDetailModal.value = true;
-  await nextTick();
-  detailModalRef.value?.focus && detailModalRef.value.focus();
-  try {
-    const response = await api.getArticleById(id);
-    dataDetail.value = response.data?.data || null;
-  } catch (error) {
-    $message.error("Không thể tải chi tiết bài viết");
-  }
-}
+// // Xem chi tiết bài viết
+// async function viewArticle(id) {
+//   showDetailModal.value = true;
+//   await nextTick();
+//   detailModalRef.value?.focus && detailModalRef.value.focus();
+//   try {
+//     const response = await api.getArticleById(id);
+//     dataDetail.value = response.data?.data || null;
+//   } catch (error) {
+//     $message.error("Không thể tải chi tiết bài viết");
+//   }
+// }
 
 // Sửa bài viết
 function editArticle(id) {
@@ -289,6 +293,16 @@ onMounted(() => {
   loadArticles();
   loadTags();
 });
+
+watch(
+  () => searchQuery.value.category,
+  () => {
+    if (searchQuery.value.category === null) {
+      throttledLoadArticles();
+    }
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped>

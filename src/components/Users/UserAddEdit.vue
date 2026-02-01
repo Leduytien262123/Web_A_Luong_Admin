@@ -13,7 +13,7 @@ const route = useRoute();
 const userStore = useUserStore();
 const context = computed(() => {
   if (route.path.includes("staff")) return "nhân sự";
-  if (route.path.includes("user")) return "khách hàng";
+  if (route.path.includes("user")) return "người dùng";
 });
 const isEdit = computed(() => !!props.id);
 const loading = ref(false);
@@ -108,7 +108,7 @@ const rules = {
         // Kiểm tra định dạng cơ bản (10 số, bắt đầu bằng 0)
         if (!/^0\d{9}$/.test(phone)) {
           return new Error(
-            "Số điện thoại định dạng không chính xác (phải gồm 10 số và bắt đầu bằng 0)"
+            "Số điện thoại định dạng không chính xác (phải gồm 10 số và bắt đầu bằng 0)",
           );
         }
 
@@ -116,7 +116,7 @@ const rules = {
         const prefix = phone.substring(0, 3);
         if (!validPrefixes.includes(prefix)) {
           return new Error(
-            "Số điện thoại định dạng không chính xác (đầu số không hợp lệ)"
+            "Số điện thoại định dạng không chính xác (đầu số không hợp lệ)",
           );
         }
 
@@ -184,7 +184,7 @@ watch(
     if (newName) {
       formValue.value.slug = generateSlug(newName);
     }
-  }
+  },
 );
 
 const formRef = ref(null);
@@ -272,7 +272,7 @@ async function handleSave() {
       ...formValue.value,
       creator_id: userStore?.userId,
       addresses: formValue.value?.addresses?.filter(
-        (addr) => addr.trim() !== ""
+        (addr) => addr.trim() !== "",
       ),
       avatar: fileList.value.map((file) => ({
         url: file.url || "",
@@ -352,21 +352,10 @@ function handleUpdateFileList(newFileList) {
     </template>
 
     <n-card :title="isEdit ? `Sửa ${context}` : `Thêm ${context}`">
-      <n-form
-        ref="formRef"
-        :model="formValue"
-        :rules="rules"
-      >
-        <n-grid
-          cols="3"
-          x-gap="16"
-          y-gap="16"
-        >
+      <n-form ref="formRef" :model="formValue" :rules="rules">
+        <n-grid cols="3" x-gap="16" y-gap="16">
           <n-grid-item span="1">
-            <n-form-item
-              :label="`Tên ${context}`"
-              path="full_name"
-            >
+            <n-form-item :label="`Tên ${context}`" path="full_name">
               <NaiveInput
                 v-model:value="formValue.full_name"
                 :placeholder="`Nhập tên ${context}`"
@@ -376,10 +365,7 @@ function handleUpdateFileList(newFileList) {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Số điện thoại"
-              path="phone"
-            >
+            <n-form-item label="Số điện thoại" path="phone">
               <NaiveInput
                 v-model:value="formValue.phone"
                 :input-props="{
@@ -396,10 +382,7 @@ function handleUpdateFileList(newFileList) {
           </n-grid-item>
 
           <n-grid-item span="1">
-            <n-form-item
-              label="Email"
-              path="email"
-            >
+            <n-form-item label="Email" path="email">
               <NaiveInput
                 v-model:value="formValue.email"
                 placeholder="Nhập email"
@@ -408,7 +391,7 @@ function handleUpdateFileList(newFileList) {
             </n-form-item>
           </n-grid-item>
 
-          <n-grid-item span="3">
+          <!-- <n-grid-item span="3">
             <n-form-item
               label="Địa chỉ"
               :path="formValue.role === 'owner' ? '' : 'address'"
@@ -420,13 +403,10 @@ function handleUpdateFileList(newFileList) {
                 @input-address-change="handleAddressChange"
               />
             </n-form-item>
-          </n-grid-item>
+          </n-grid-item> -->
 
           <n-grid-item span="3">
-            <n-form-item
-              label="Chọn ảnh đại diện"
-              path="avatar"
-            >
+            <n-form-item label="Chọn ảnh đại diện" path="avatar">
               <!-- <NaiveUpload
                 :file-list="avatar"
                 @update:file-list="emit('update:avatar', $event)"

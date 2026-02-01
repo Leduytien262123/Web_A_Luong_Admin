@@ -1,1 +1,0 @@
-import{an as i}from"./index-DYcU_f0W.js";function u(t=void 0,e="YYYY-MM-DD HH:mm:ss"){return i(t).format(e)}function m(t,e){let n,o,r=0;return function(...a){const s=+new Date;n=this,o=a,s-r>e&&(t.apply(n,o),r=s)}}function c(t){return new Promise(e=>setTimeout(e,t))}export{u as f,c as s,m as t};

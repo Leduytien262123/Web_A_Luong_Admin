@@ -104,7 +104,7 @@ export const basicRoutes = [
     path: "/user",
     component: () => import("@/views/user/index.vue"),
     meta: {
-      title: "Quản lý khách hàng",
+      title: "Quản lý người dùng",
     },
   },
 
@@ -113,7 +113,7 @@ export const basicRoutes = [
     path: "/user/add",
     component: () => import("@/views/user/add.vue"),
     meta: {
-      title: "Thêm khách hàng",
+      title: "Thêm người dùng",
     },
   },
 
@@ -122,7 +122,7 @@ export const basicRoutes = [
     path: "/user/edit/:id",
     component: () => import("@/views/user/edit/[id].vue"),
     meta: {
-      title: "Sửa khách hàng",
+      title: "Sửa người dùng",
     },
   },
 

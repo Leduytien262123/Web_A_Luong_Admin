@@ -1,1 +1,0 @@
-import{c as t,aS as u}from"./index-DYcU_f0W.js";function i(o={}){const e=t(null),n=t(u(o));return[e,n,()=>{var r;return(r=e.value)==null?void 0:r.validate()},{required:{required:!0,message:"Đây là trường bắt buộc",trigger:["blur","change"]}}]}export{i as u};
