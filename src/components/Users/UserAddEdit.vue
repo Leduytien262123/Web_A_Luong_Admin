@@ -25,9 +25,12 @@ const formValue = ref({
   role: null,
   creator_id: userStore.userId,
   creator_name: userStore.username,
+  username: "",
   full_name: "",
   phone: "",
   email: "",
+  password: "Admin123456a@",
+  is_active: true,
   address: "",
   addresses: [""],
 });
@@ -68,7 +71,7 @@ const rules = {
           return new Error("Vui lòng nhập số điện thoại");
         }
 
-        // Đầu số hợp lệ của nhà mạng Việt Nam
+        // Đầu số hợp lệ của nhà mạng Việt Nam (kiểm tra khi dùng định dạng 0xxxxxxxxx)
         const validPrefixes = [
           "032",
           "033",
@@ -105,23 +108,85 @@ const rules = {
           "095", // các đầu số cũ
         ];
 
-        // Kiểm tra định dạng cơ bản (10 số, bắt đầu bằng 0)
-        if (!/^0\d{9}$/.test(phone)) {
+        // Cho phép 2 dạng: bắt đầu bằng 0 (10 chữ số) hoặc bắt đầu bằng +84 (theo sau là 9 chữ số)
+        if (!/^0\d{9}$/.test(phone) && !/^\+84\d{9}$/.test(phone)) {
           return new Error(
-            "Số điện thoại định dạng không chính xác (phải gồm 10 số và bắt đầu bằng 0)",
+            "Số điện thoại định dạng không chính xác (ví dụ: 0912345678 hoặc +84912345678)",
           );
         }
 
-        // Kiểm tra đầu số hợp lệ
-        const prefix = phone.substring(0, 3);
-        if (!validPrefixes.includes(prefix)) {
-          return new Error(
-            "Số điện thoại định dạng không chính xác (đầu số không hợp lệ)",
-          );
+        // Nếu dùng định dạng 0XXXXXXXXX thì kiểm tra đầu số
+        if (phone.startsWith("0")) {
+          const prefix = phone.substring(0, 3);
+          if (!validPrefixes.includes(prefix)) {
+            return new Error(
+              "Số điện thoại định dạng không chính xác (đầu số không hợp lệ)",
+            );
+          }
         }
 
         return true;
       },
+    },
+  ],
+  username: [
+    {
+      required: true,
+      trigger: ["blur", "input"],
+      validator(rule, value) {
+        const v = String(value || "").trim();
+        if (!v) return new Error("Vui lòng nhập tên đăng nhập");
+        if (v.length < 3)
+          return new Error("Tên đăng nhập phải có ít nhất 3 ký tự");
+        if (v.length > 30)
+          return new Error("Tên đăng nhập không được quá 30 ký tự");
+        if (!/^[a-zA-Z0-9._-]+$/.test(v))
+          return new Error(
+            "Tên đăng nhập chỉ chứa chữ, số, dấu chấm, gạch dưới hoặc gạch ngang",
+          );
+        return true;
+      },
+    },
+  ],
+  password: [
+    {
+      required: true,
+      trigger: ["blur", "input"],
+      validator(rule, value) {
+        const pw = String(value || "");
+        if (!pw) return new Error("Vui lòng nhập mật khẩu");
+        if (pw.length < 8) return new Error("Mật khẩu phải có ít nhất 8 ký tự");
+        // Ít nhất một chữ cái và một chữ số
+        if (!/(?=.*[A-Za-z])(?=.*\d)/.test(pw))
+          return new Error(
+            "Mật khẩu phải chứa ít nhất một chữ cái và một chữ số",
+          );
+        return true;
+      },
+    },
+  ],
+  confirm_password: [
+    {
+      required: isEdit.value,
+      trigger: ["blur", "input"],
+      validator(rule, value) {
+        const pw = formValue.value.password || "";
+        const cpw = String(value || "");
+        if (isEdit.value && !cpw) {
+          return new Error("Vui lòng nhập lại mật khẩu");
+        }
+        if (pw !== cpw) {
+          return new Error("Mật khẩu nhập lại không khớp");
+        }
+        return true;
+      },
+    },
+  ],
+  role: [
+    {
+      required: true,
+      trigger: ["blur", "change"],
+      message: "Vui lòng chọn phân quyền",
     },
   ],
   email: [
@@ -189,6 +254,41 @@ watch(
 
 const formRef = ref(null);
 const updateAddressRef = ref(null);
+const showChangePassword = ref(false);
+const cpFormRef = ref(null);
+const changePassword = ref({ password: "", confirm_password: "" });
+
+const cpRules = {
+  password: [
+    {
+      required: true,
+      trigger: ["blur", "input"],
+      validator(rule, value) {
+        const pw = String(value || "");
+        if (!pw) return new Error("Vui lòng nhập mật khẩu mới");
+        if (pw.length < 8) return new Error("Mật khẩu phải có ít nhất 8 ký tự");
+        if (!/(?=.*[A-Za-z])(?=.*\d)/.test(pw))
+          return new Error(
+            "Mật khẩu phải chứa ít nhất một chữ cái và một chữ số",
+          );
+        return true;
+      },
+    },
+  ],
+  confirm_password: [
+    {
+      required: true,
+      trigger: ["blur", "input"],
+      validator(rule, value) {
+        const pw = changePassword.value.password || "";
+        const cpw = String(value || "");
+        if (!cpw) return new Error("Vui lòng nhập lại mật khẩu");
+        if (pw !== cpw) return new Error("Mật khẩu nhập lại không khớp");
+        return true;
+      },
+    },
+  ],
+};
 
 async function loadUser() {
   if (!props.id) return;
@@ -200,11 +300,13 @@ async function loadUser() {
       const d = response.data.data;
       formValue.value = {
         role: d.role || null,
+        username: d.username || "",
         creator_id: d.creator_id,
         creator_name: d.creator_name,
         full_name: d.full_name || "",
         phone: d.phone || "",
         email: d.email || "",
+        is_active: d.is_active !== undefined ? d.is_active : true,
         addresses: d.addresses?.map((a) => a.address) || [""],
       };
 
@@ -249,35 +351,37 @@ async function handleSave() {
   try {
     await formRef.value?.validate();
 
-    if (
-      userStore.role !== "owner" &&
-      updateAddressRef.value &&
-      !updateAddressRef.value.handleSaveRequest()
-    ) {
-      return;
-    }
+    // if (
+    //   userStore.role !== "owner" &&
+    //   updateAddressRef.value &&
+    //   !updateAddressRef.value.handleSaveRequest()
+    // ) {
+    //   return;
+    // }
 
-    if (
-      userStore.role !== "owner" &&
-      (formValue.value.addresses.length === 0 ||
-        !formValue.value.addresses[0].trim())
-    ) {
-      $message.error("Vui lòng nhập địa chỉ");
-      return;
-    }
+    // if (
+    //   userStore.role !== "owner" &&
+    //   (formValue.value.addresses.length === 0 ||
+    //     !formValue.value.addresses[0].trim())
+    // ) {
+    //   $message.error("Vui lòng nhập địa chỉ");
+    //   return;
+    // }
 
     loading.value = true;
 
     const body = {
-      ...formValue.value,
-      creator_id: userStore?.userId,
-      addresses: formValue.value?.addresses?.filter(
-        (addr) => addr.trim() !== "",
-      ),
+      username: formValue.value.username,
+      email: formValue.value.email,
+      password: formValue.value.password,
+      role: formValue.value.role,
+      full_name: formValue.value.full_name,
+      phone: formValue.value.phone,
       avatar: fileList.value.map((file) => ({
         url: file.url || "",
         alt: file.alt || "",
       })),
+      is_active: !!formValue.value.is_active,
     };
 
     if (isEdit.value) {
@@ -343,6 +447,35 @@ function handleUpdateFileList(newFileList) {
     emit("update:avatar", newFileList);
   }
 }
+
+async function submitChangePassword() {
+  try {
+    await cpFormRef.value?.validate();
+    loading.value = true;
+    const payload = { password: changePassword.value.password };
+    if (isEdit.value && props.id) {
+      await api.resetUserPassword(props.id, payload);
+    } else {
+      await api.changePassword(payload);
+    }
+    $message.success("Đổi mật khẩu thành công");
+    showChangePassword.value = false;
+    changePassword.value.password = "";
+    changePassword.value.confirm_password = "";
+  } catch (err) {
+    if (err?.errors) return;
+    $message.error("Đổi mật khẩu thất bại");
+    console.error("Change password error:", err);
+  } finally {
+    loading.value = false;
+  }
+}
+
+function cancelChangePassword() {
+  showChangePassword.value = false;
+  changePassword.value.password = "";
+  changePassword.value.confirm_password = "";
+}
 </script>
 
 <template>
@@ -354,6 +487,15 @@ function handleUpdateFileList(newFileList) {
     <n-card :title="isEdit ? `Sửa ${context}` : `Thêm ${context}`">
       <n-form ref="formRef" :model="formValue" :rules="rules">
         <n-grid cols="3" x-gap="16" y-gap="16">
+          <n-grid-item span="1">
+            <n-form-item label="Tên đăng nhập" path="username">
+              <NaiveInput
+                v-model:value="formValue.username"
+                placeholder="Nhập tên đăng nhập"
+              />
+            </n-form-item>
+          </n-grid-item>
+
           <n-grid-item span="1">
             <n-form-item :label="`Tên ${context}`" path="full_name">
               <NaiveInput
@@ -368,15 +510,7 @@ function handleUpdateFileList(newFileList) {
             <n-form-item label="Số điện thoại" path="phone">
               <NaiveInput
                 v-model:value="formValue.phone"
-                :input-props="{
-                  inputmode: 'numeric',
-                  pattern: '[0-9]*',
-                  maxlength: 10,
-                }"
-                placeholder="Nhập số điện thoại"
-                @input="
-                  formValue.phone = $event.replace(/[^\d]/g, '').slice(0, 10)
-                "
+                placeholder="Nhập số điện thoại (ví dụ: +84123456789)"
               />
             </n-form-item>
           </n-grid-item>
@@ -386,10 +520,64 @@ function handleUpdateFileList(newFileList) {
               <NaiveInput
                 v-model:value="formValue.email"
                 placeholder="Nhập email"
-                @input="formValue.email = $event.replace(/[^\d]/g, '')"
               />
             </n-form-item>
           </n-grid-item>
+
+          <n-grid-item span="1">
+            <n-form-item label="Phân quyền" path="role">
+              <NaiveSelect
+                v-model:value="formValue.role"
+                :options="[{ label: 'Admin', value: 'admin' }]"
+                placeholder="Chọn phân quyền"
+              />
+            </n-form-item>
+          </n-grid-item>
+
+          <n-grid-item v-if="!isEdit" span="1">
+            <n-form-item label="Mật khẩu" path="password">
+              <NaiveInput
+                v-model:value="formValue.password"
+                placeholder="Nhập mật khẩu"
+                type="password"
+                show-password-on="mousedown"
+              />
+            </n-form-item>
+          </n-grid-item>
+
+          <n-grid-item span="1">
+            <n-form-item label="Hoạt động" path="is_active">
+              <n-switch v-model:value="formValue.is_active" />
+            </n-form-item>
+          </n-grid-item>
+
+          <n-grid-item v-if="isEdit" span="3">
+            <n-button type="primary" @click="showChangePassword = true"
+              >Đổi mật khẩu</n-button
+            >
+          </n-grid-item>
+
+          <!-- <n-grid-item v-if="isEdit" span="1">
+            <n-form-item label="Mật khẩu" path="password">
+              <NaiveInput
+                v-model:value="formValue.password"
+                placeholder="Nhập mật khẩu"
+                type="password"
+                show-password-on="mousedown"
+              />
+            </n-form-item>
+          </n-grid-item>
+
+          <n-grid-item v-if="isEdit" span="1">
+            <n-form-item label="Nhập lại mật khẩu" path="confirm_password">
+              <NaiveInput
+                v-model:value="formValue.confirm_password"
+                placeholder="Nhập lại mật khẩu"
+                type="password"
+                show-password-on="mousedown"
+              />
+            </n-form-item>
+          </n-grid-item> -->
 
           <!-- <n-grid-item span="3">
             <n-form-item
@@ -425,6 +613,36 @@ function handleUpdateFileList(newFileList) {
           </n-grid-item>
         </n-grid>
       </n-form>
+
+      <n-modal v-model:show="showChangePassword">
+        <div class="p-[24px] w-[480px] rounded-xl bg-white">
+          <h3 class="text-[16px] mb-4">Đổi mật khẩu</h3>
+          <n-form ref="cpFormRef" :model="changePassword" :rules="cpRules">
+            <n-form-item label="Mật khẩu mới" path="password">
+              <NaiveInput
+                v-model:value="changePassword.password"
+                type="password"
+                placeholder="Nhập mật khẩu mới"
+                show-password-on="mousedown"
+              />
+            </n-form-item>
+            <n-form-item label="Nhập lại mật khẩu" path="confirm_password">
+              <NaiveInput
+                v-model:value="changePassword.confirm_password"
+                type="password"
+                placeholder="Nhập lại mật khẩu"
+                show-password-on="mousedown"
+              />
+            </n-form-item>
+          </n-form>
+          <div class="flex justify-end gap-3 mt-4">
+            <n-button @click="cancelChangePassword">Hủy</n-button>
+            <n-button type="primary" @click="submitChangePassword"
+              >Cập nhật</n-button
+            >
+          </div>
+        </div>
+      </n-modal>
 
       <template #action>
         <ButtonSave

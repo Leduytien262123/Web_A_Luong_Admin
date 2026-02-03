@@ -157,13 +157,14 @@ async function handleLogin(isQuick) {
     $message.destroy("login");
 
     let errorMessage = "Đăng nhập thất bại";
-    if (error.response) {
+    console.log("🚀 ~ handleLogin ~ error.response:", error);
+    if (error.code) {
       errorMessage =
-        error.response.data?.message ||
-        error.response.statusText ||
-        errorMessage;
-    } else if (error.message) {
-      errorMessage = error.message;
+        error?.code === "INVALID_CREDENTIALS"
+          ? "Sai thông tin tài khoản"
+          : errorMessage;
+    } else {
+      errorMessage = error?.message || errorMessage;
     }
 
     $message.error(errorMessage);
