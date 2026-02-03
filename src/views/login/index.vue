@@ -79,7 +79,7 @@
 <script setup>
 import { useStorage } from "@vueuse/core";
 import { useAuthStore } from "@/store";
-import { lStorage, throttle } from "@/utils";
+import { throttle } from "@/utils";
 import api from "./api";
 
 const authStore = useAuthStore();
@@ -101,11 +101,8 @@ const initCaptcha = throttle(() => {
   captchaUrl.value = `https://mock.apipark.cn/m1/3776410-0-default/auth/captcha?_t=${timestamp}&_r=${randomParam}`;
 }, 500);
 
-const localLoginInfo = lStorage.get("loginInfo");
-if (localLoginInfo) {
-  loginInfo.value.username = localLoginInfo.username || "";
-  loginInfo.value.password = localLoginInfo.password || "";
-}
+// Do not prefill or persist login credentials to device/localStorage
+// (for privacy/security reasons). Previously saved credentials are ignored.
 initCaptcha();
 
 function quickLogin() {
@@ -139,11 +136,7 @@ async function handleLogin(isQuick) {
     }
 
     if (loginData && loginData.success) {
-      if (isRemember.value) {
-        lStorage.set("loginInfo", { username, password });
-      } else {
-        lStorage.remove("loginInfo");
-      }
+      // Do NOT save username/password to local storage regardless of "remember"
       onLoginSuccess(loginData);
     } else {
       throw new Error(
