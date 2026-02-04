@@ -14,14 +14,13 @@
 </template>
 
 <script setup>
-import { useAppStore, usePermissionStore, useUserStore } from "@/store";
+import { useAppStore, useUserStore } from "@/store";
 import { isExternal } from "@/utils";
 import { h } from "vue";
 
 const router = useRouter();
 const route = useRoute();
 const appStore = useAppStore();
-const permissionStore = usePermissionStore();
 
 const menuRef = ref(null);
 const activeKey = computed(() => {

@@ -71,8 +71,7 @@ const searchQuery = ref({
 const dataDetail = ref(null);
 const showDetailModal = ref(false);
 const context = computed(() => {
-  if (route.path.includes("staff")) return "nhân sự";
-  if (route.path.includes("user")) return "người dùng";
+  return "người dùng";
 });
 const titleDetail = ref(`Chi tiết ${context.value}`);
 const detailModalRef = ref(null);
@@ -202,19 +201,6 @@ async function loadUsers() {
 
 // Tạo hàm throttle cho loadUsers
 const throttledLoadUsers = throttle(loadUsers, 500);
-
-// Xem chi tiết
-async function viewUser(id) {
-  showDetailModal.value = true;
-  await nextTick();
-  detailModalRef.value?.focus && detailModalRef.value.focus();
-  try {
-    const response = await api.getUserById(id);
-    dataDetail.value = response.data?.data || null;
-  } catch (error) {
-    $message.error(`Không thể tải chi tiết ${context.value}`);
-  }
-}
 
 // Xóa
 function deleteUser(id) {

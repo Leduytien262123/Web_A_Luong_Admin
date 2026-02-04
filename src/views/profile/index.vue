@@ -11,15 +11,15 @@
           <div class="flex items-center text-16">
             <span>Tên người dùng:</span>
             <span class="ml-12 opacity-80">{{ userStore.username }}</span>
-            <!-- <n-button
+            <n-button
               class="ml-32"
               type="primary"
               text
               @click="pwdModalRef.open()"
             >
               <i class="i-fe:edit mr-4" />
-              Sửa mật khẩu
-            </n-button> -->
+              Đổi mật khẩu
+            </n-button>
           </div>
           <!-- <div class="mt-16 flex items-center">
             <n-button type="primary" ghost @click="avatarModalRef.open()">
@@ -77,16 +77,11 @@
 
     <MeModal
       ref="pwdModalRef"
-      title="Sửa mật khẩu"
-      width="420px"
+      title="Đổi mật khẩu"
+      width="520px"
       @ok="handlePwdSave()"
     >
-      <n-form
-        ref="pwdFormRef"
-        :model="pwdForm"
-        label-placement="left"
-        require-mark-placement="left"
-      >
+      <n-form ref="pwdFormRef" :model="pwdForm">
         <n-form-item label="Mật khẩu cũ" path="oldPassword" :rule="required">
           <n-input
             v-model:value="pwdForm.oldPassword"
@@ -95,11 +90,27 @@
             show-password-on="mousedown"
           />
         </n-form-item>
-        <n-form-item label="Mật khẩu mới" path="newPassword" :rule="required">
+        <n-form-item
+          label="Mật khẩu mới"
+          path="newPassword"
+          :rule="[required, passwordRule]"
+        >
           <n-input
             v-model:value="pwdForm.newPassword"
             type="password"
             placeholder="Vui lòng nhập mật khẩu mới"
+            show-password-on="mousedown"
+          />
+        </n-form-item>
+        <n-form-item
+          label="Xác nhận mật khẩu mới"
+          path="confirmNewPassword"
+          :rule="[required, confirmRule]"
+        >
+          <n-input
+            v-model:value="pwdForm.confirmNewPassword"
+            type="password"
+            placeholder="Vui lòng nhập lại mật khẩu mới"
             show-password-on="mousedown"
           />
         </n-form-item>
@@ -149,23 +160,60 @@ import { MeModal } from "@/components";
 import { useForm, useModal } from "@/composables";
 import { useUserStore } from "@/store";
 import { getUserInfo } from "@/store/helper";
-import api from "./api";
 
 const userStore = useUserStore();
 const required = {
   required: true,
   message: "Đây là trường bắt buộc",
-  trigger: ["blur", "change"],
+  trigger: ["blur", "input"],
 };
 
-const [pwdModalRef] = useModal();
+const confirmRule = {
+  validator: (rule, value) => {
+    if (value !== pwdForm.value.newPassword) {
+      return Promise.reject(new Error("Mật khẩu không khớp với mật khẩu mới"));
+    }
+    return Promise.resolve();
+  },
+  trigger: ["blur", "input"],
+};
+
+const passwordRule = {
+  validator: (rule, value) => {
+    if (!value || value.length < 8) {
+      return Promise.reject(new Error("Mật khẩu phải có ít nhất 8 ký tự"));
+    }
+    return Promise.resolve();
+  },
+  trigger: ["blur", "input"],
+};
+
+const [pwdModalRef, pwdOkLoading] = useModal();
 const [pwdFormRef, pwdForm, pwdValidation] = useForm();
 
 async function handlePwdSave() {
   await pwdValidation();
-  await api.changePassword(pwdForm.value);
-  $message.success("Sửa mật khẩu thành công");
-  refreshUserInfo();
+  pwdOkLoading.value = true;
+  try {
+    await api.userChangePassword({
+      current_password: pwdForm.value.oldPassword,
+      new_password: pwdForm.value.newPassword,
+      confirm_password: pwdForm.value.confirmNewPassword,
+    });
+    $message.success("Đổi mật khẩu thành công");
+  } catch (error) {
+    let errorMessage = "Đổi mật khẩu không thành công";
+    if (error.message) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = error?.message || errorMessage;
+    }
+    $message.error(errorMessage);
+    return false;
+  } finally {
+    pwdOkLoading.value = false;
+  }
+  // refreshUserInfo();
 }
 
 const newAvatar = ref(userStore.avatar);
@@ -176,7 +224,7 @@ async function handleAvatarSave() {
     return false;
   }
   await api.updateProfile({ id: userStore.userId, avatar: newAvatar.value });
-  $message.success("Sửa avatar thành công");
+  $message.success("Đổi avatar thành công");
   refreshUserInfo();
 }
 

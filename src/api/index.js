@@ -141,6 +141,7 @@ export default {
   getUser: () => request.get("/api/user/profile"),
   updateProfile: (data) => request.put("/api/user/profile", data),
   changePassword: (data) => request.post("/api/user/change-password", data),
+  userChangePassword: (data) => request.put("/api/auth/password", data),
 
   // Role & Permission APIs
   getRolePermissions: () => request.get("/api/admin/roles/permissions"),

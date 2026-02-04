@@ -1,4 +1,6 @@
 <script setup>
+import { useModal } from "@/composables";
+import { MeModal } from "@/components";
 defineOptions({ name: "UserAddEdit" });
 
 const props = defineProps({
@@ -12,8 +14,7 @@ const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
 const context = computed(() => {
-  if (route.path.includes("staff")) return "nhân sự";
-  if (route.path.includes("user")) return "người dùng";
+  return "người dùng";
 });
 const isEdit = computed(() => !!props.id);
 const loading = ref(false);
@@ -56,7 +57,6 @@ const rules = {
           return new Error(`Tên ${context.value} không được quá 100 ký tự`);
         return true;
       },
-      trigger: ["blur", "input"],
     },
   ],
   phone: [
@@ -215,7 +215,7 @@ const rules = {
     {
       required: true,
       trigger: ["blur", "input"],
-      validator(rule, value) {
+      validator() {
         const address = formValue.value.address;
         if (!address) {
           return new Error("Vui lòng nhập địa chỉ");
@@ -253,8 +253,7 @@ watch(
 );
 
 const formRef = ref(null);
-const updateAddressRef = ref(null);
-const showChangePassword = ref(false);
+const [showChangePassword] = useModal();
 const cpFormRef = ref(null);
 const changePassword = ref({ password: "", confirm_password: "" });
 
@@ -416,10 +415,6 @@ function handleInput() {
   }
 }
 
-function handleAddressChange(val) {
-  formValue.value.address = val;
-}
-
 function handleUploadSuccess(file) {
   const imageObj = {
     url: file.url || "",
@@ -455,11 +450,9 @@ async function submitChangePassword() {
     const payload = { password: changePassword.value.password };
     if (isEdit.value && props.id) {
       await api.resetUserPassword(props.id, payload);
-    } else {
-      await api.changePassword(payload);
     }
     $message.success("Đổi mật khẩu thành công");
-    showChangePassword.value = false;
+    showChangePassword.value?.close();
     changePassword.value.password = "";
     changePassword.value.confirm_password = "";
   } catch (err) {
@@ -472,7 +465,7 @@ async function submitChangePassword() {
 }
 
 function cancelChangePassword() {
-  showChangePassword.value = false;
+  showChangePassword.value?.close();
   changePassword.value.password = "";
   changePassword.value.confirm_password = "";
 }
@@ -552,9 +545,9 @@ function cancelChangePassword() {
           </n-grid-item>
 
           <n-grid-item v-if="isEdit" span="3">
-            <n-button type="primary" @click="showChangePassword = true"
-              >Đổi mật khẩu</n-button
-            >
+            <n-button type="primary" @click="showChangePassword.open()">
+              Đổi mật khẩu
+            </n-button>
           </n-grid-item>
 
           <!-- <n-grid-item v-if="isEdit" span="1">
@@ -614,35 +607,38 @@ function cancelChangePassword() {
         </n-grid>
       </n-form>
 
-      <n-modal v-model:show="showChangePassword">
-        <div class="p-[24px] w-[480px] rounded-xl bg-white">
-          <h3 class="text-[16px] mb-4">Đổi mật khẩu</h3>
-          <n-form ref="cpFormRef" :model="changePassword" :rules="cpRules">
-            <n-form-item label="Mật khẩu mới" path="password">
-              <NaiveInput
-                v-model:value="changePassword.password"
-                type="password"
-                placeholder="Nhập mật khẩu mới"
-                show-password-on="mousedown"
-              />
-            </n-form-item>
-            <n-form-item label="Nhập lại mật khẩu" path="confirm_password">
-              <NaiveInput
-                v-model:value="changePassword.confirm_password"
-                type="password"
-                placeholder="Nhập lại mật khẩu"
-                show-password-on="mousedown"
-              />
-            </n-form-item>
-          </n-form>
-          <div class="flex justify-end gap-3 mt-4">
-            <n-button @click="cancelChangePassword">Hủy</n-button>
-            <n-button type="primary" @click="submitChangePassword"
-              >Cập nhật</n-button
-            >
-          </div>
+      <MeModal
+        ref="showChangePassword"
+        title="Đổi mật khẩu"
+        width="520px"
+        @ok="submitChangePassword"
+        :showFooter="false"
+      >
+        <n-form ref="cpFormRef" :model="changePassword" :rules="cpRules">
+          <n-form-item label="Mật khẩu mới" path="password">
+            <NaiveInput
+              v-model:value="changePassword.password"
+              type="password"
+              placeholder="Nhập mật khẩu mới"
+              show-password-on="mousedown"
+            />
+          </n-form-item>
+          <n-form-item label="Nhập lại mật khẩu" path="confirm_password">
+            <NaiveInput
+              v-model:value="changePassword.confirm_password"
+              type="password"
+              placeholder="Nhập lại mật khẩu"
+              show-password-on="mousedown"
+            />
+          </n-form-item>
+        </n-form>
+        <div class="flex justify-end gap-12 mt-4">
+          <n-button @click="cancelChangePassword">Hủy</n-button>
+          <n-button type="primary" @click="submitChangePassword"
+            >Cập nhật</n-button
+          >
         </div>
-      </n-modal>
+      </MeModal>
 
       <template #action>
         <ButtonSave
